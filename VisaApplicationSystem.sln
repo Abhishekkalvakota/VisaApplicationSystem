@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34316.72
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisaApplicationSysWeb", "VisaApplicationSysWeb\VisaApplicationSysWeb.csproj", "{7F2D85B8-3D3E-48A5-961F-DC4E5BCF1B86}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7F2D85B8-3D3E-48A5-961F-DC4E5BCF1B86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F2D85B8-3D3E-48A5-961F-DC4E5BCF1B86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F2D85B8-3D3E-48A5-961F-DC4E5BCF1B86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F2D85B8-3D3E-48A5-961F-DC4E5BCF1B86}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {16448073-D8DC-44BF-BF60-018EC920E1B3}
+	EndGlobalSection
+EndGlobal

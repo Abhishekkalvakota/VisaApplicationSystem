@@ -1,0 +1,79 @@
+﻿@model VisaApplicationSysWeb.ApplicantProfile
+@{
+    ViewData["Title"] = "Visa Application Form";
+}
+
+<div class="text-center">
+    <h2>@ViewData["Title"]</h2>
+
+    <form asp-action="Profile" asp-controller="YourController" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label asp-for="FirstName"></label>
+            <input asp-for="FirstName" class="form-control" />
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="LastName"></label>
+            <input asp-for="LastName" class="form-control" />
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Email"></label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="DateOfBirth"></label>
+            <input asp-for="DateOfBirth" class="form-control datepicker" />
+            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+        </div>
+
+
+        <div class="form-group">
+            <label asp-for="PassportFilePath"></label>
+            <input type="file" name="PassportFile" class="form-control-file" />
+            <span asp-validation-for="PassportFilePath" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Nationality"></label>
+            <input asp-for="Nationality" class="form-control" />
+            <span asp-validation-for="Nationality" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ApplicationStatus"></label>
+            <input asp-for="ApplicationStatus" class="form-control" />
+            <span asp-validation-for="ApplicationStatus" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="IntendedArrivalDate"></label>
+            <input asp-for="IntendedArrivalDate" class="form-control datepicker" />
+            <span asp-validation-for="IntendedArrivalDate" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="IntendedDepartureDate"></label>
+            <input asp-for="IntendedDepartureDate" class="form-control datepicker" />
+            <span asp-validation-for="IntendedDepartureDate" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="VisaTypes"></label>
+            <select asp-for="VisaTypes" asp-items="new SelectList(Model.VisaTypes, "Value", "Text")" class="form-control">
+                <option value="">Select Visa Type</option>
+            </select>
+            <span asp-validation-for="VisaTypes" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-dark">Submit</button>
+    </form>
+</div>
+
+
+
+
