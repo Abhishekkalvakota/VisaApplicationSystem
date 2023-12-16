@@ -12,11 +12,10 @@
 </head>
 <body class="bg-light d-flex align-items-center justify-content-center" style="height: 100vh; margin: 0;">
 
-   
-
     <div class="card" style="width: 300px;">
         <div class="card-body">
-            <form method="post" asp-action="Registration" asp-controller="User">
+            <h5 class="card-title text-center mb-4">Unlock a world of possibilities!</h5>
+            <form id="registrationForm" method="post" asp-action="Registration" asp-controller="User">
 
                 <div class="form-group">
                     <label for="Username">Username:</label>
@@ -36,12 +35,24 @@
                     <span asp-validation-for="ConfirmPassword"></span>
                 </div>
 
-                <button type="submit" class="btn btn-dark btn-block">Register</button>
+                <button type="submit" class="btn btn-dark btn-block">Unleash the Adventure</button>
             </form>
+            <div class="mt-3 text-center">
+                Already have an account? <a href="/User/Login">Sign In</a>
+            </div>
         </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#registrationForm').validate();
+        });
+    </script>
+
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>

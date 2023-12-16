@@ -1,0 +1,139 @@
+﻿@model VisaApplicationSysWeb.Models.StudentVisaForm
+
+
+<style>
+
+    .custom-width {
+        width: 500px
+    }
+</style>
+
+
+<div class="container py-5">
+    <form asp-action="Student" asp-controller="ApplyVisa" method="post" enctype="multipart/form-data" id="studentVisaForm">
+        <input type="hidden" asp-for="VisaTypeId" value="@ViewBag.selectedVisaType" />
+        <div class="form-group mb-3">
+            <label asp-for="FullName">Full Name</label>
+            <input asp-for="FullName" class="form-control custom-width" />
+            <span asp-validation-for="FullName" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="DateOfBirth">Date of Birth</label>
+            <input asp-for="DateOfBirth" class="form-control datepicker custom-width" />
+            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="Nationality">Nationality</label>
+            <input asp-for="Nationality" class="form-control custom-width" />
+            <span asp-validation-for="Nationality" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="PassportNumber">Passport Number</label>
+            <input asp-for="PassportNumber" class="form-control custom-width" />
+            <span asp-validation-for="PassportNumber" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="CurrentAddress">Current Address</label>
+            <input asp-for="CurrentAddress" class="form-control custom-width" />
+            <span asp-validation-for="CurrentAddress" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="Email">Email</label>
+            <input asp-for="Email" class="form-control custom-width" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="PhoneNumber">Phone Number</label>
+            <input asp-for="PhoneNumber" class="form-control custom-width" />
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="HighestEducationLevel">Highest Education Level</label>
+            <input asp-for="HighestEducationLevel" class="form-control custom-width" />
+            <span asp-validation-for="HighestEducationLevel" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="InstitutionName">Institution Name</label>
+            <input asp-for="InstitutionName" class="form-control custom-width" />
+            <span asp-validation-for="InstitutionName" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="CourseTitle">Course Title</label>
+            <input asp-for="CourseTitle" class="form-control custom-width" />
+            <span asp-validation-for="CourseTitle" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="ExpectedStartDate">Expected Start Date</label>
+            <input asp-for="ExpectedStartDate" class="form-control datepicker custom-width" />
+            <span asp-validation-for="ExpectedStartDate" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="ProofOfFundsType">Proof of Funds Type</label>
+            <input asp-for="ProofOfFundsType" class="form-control custom-width" />
+            <span asp-validation-for="ProofOfFundsType" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="LanguageTestTaken">Language Test Taken</label>
+            <input asp-for="LanguageTestTaken" class="form-control custom-width" />
+            <span asp-validation-for="LanguageTestTaken" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="LanguageTestScore">Language Test Score</label>
+            <input asp-for="LanguageTestScore" class="form-control custom-width" />
+            <span asp-validation-for="LanguageTestScore" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="PassportPhotoPath">Upload Passport Photo</label>
+            <input type="file" name="PassportPhotoPath" class="form-control-file custom-width" />
+            <span asp-validation-for="PassportPhotoPath" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="Passportpath">Upload Passport </label>
+            <input type="file" name="Passportpath" class="form-control-file custom-width" />
+            <span asp-validation-for="Passportpath" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="ResumePath">Upload Resume</label>
+            <input type="file" name="ResumePath" class="form-control-file custom-width" />
+            <span asp-validation-for="ResumePath" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="HighestEducationLevelMarkSheetPath">Highest EducationLevel MarkSheetPath</label>
+            <input type="file" name="HighestEducationLevelMarkSheetPath" class="form-control-file custom-width" />
+            <span asp-validation-for="HighestEducationLevelMarkSheetPath" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="TestCardPath">Upload Test Card</label>
+            <input type="file" name="TestCardPath" class="form-control-file custom-width" />
+            <span asp-validation-for="TestCardPath" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-dark">Submit</button>
+    </form>
+</div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+           
+            $('#studentVisaForm').validate();
+        });
+    </script>
+}

@@ -1,0 +1,77 @@
+﻿@model VisaApplicationSysWeb.Models.VisaStatusModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Visa Status Details</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .card {
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background-color: #343a40; /* Dark background color */
+            color: #fff;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .card-title {
+            font-size: 24px;
+            margin-bottom: 0;
+        }
+
+        .details-section {
+            margin-top: 20px;
+        }
+
+            .details-section p {
+                font-size: 16px;
+                margin-bottom: 10px;
+            }
+
+            .details-section strong {
+                font-weight: 600;
+            }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h1 class="card-title">Visa Status Details</h1>
+            </div>
+            <div class="card-body">
+                <div class="row details-section">
+                    <div class="col-md-6">
+                        <p><strong>Applicant ID:</strong> @Model.ApplicantId</p>
+                        <p><strong>Full Name:</strong> @Model.FullName</p>
+                        <p><strong>Email:</strong> @Model.Email</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Visa Type:</strong> @Model.VisaType</p>
+                        <p><strong>Status:</strong> @Model.Status</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,79 +1,331 @@
-﻿@model VisaApplicationSysWeb.ApplicantProfile
-@{
-    ViewData["Title"] = "Visa Application Form";
-}
+﻿@model VisaApplicationSysWeb.Models.ApplicantProfile
 
-<div class="text-center">
-    <h2>@ViewData["Title"]</h2>
+<style>
+    
+    .custom-width {
+        width: 500px 
+    }
+</style>
 
-    <form asp-action="Profile" asp-controller="YourController" method="post" enctype="multipart/form-data">
-        <div class="form-group">
-            <label asp-for="FirstName"></label>
-            <input asp-for="FirstName" class="form-control" />
-            <span asp-validation-for="FirstName" class="text-danger"></span>
+<div class="container py-5">
+
+    <form asp-action="Profile" asp-controller="User" method="post" enctype="multipart/form-data">
+
+        <input type="hidden" id="VisaTypeId" name="VisaTypeId" value="@Model.VisaTypeId" />
+
+        <div class="form-group mb-3">
+            <label asp-for="FullName"> FullName</label>
+            <input asp-for="FullName" class="form-control custom-width" />
+            <span asp-validation-for="FullName" class="text-danger"></span>
         </div>
 
-        <div class="form-group">
-            <label asp-for="LastName"></label>
-            <input asp-for="LastName" class="form-control" />
-            <span asp-validation-for="LastName" class="text-danger"></span>
-        </div>
-
-        <div class="form-group">
-            <label asp-for="Email"></label>
-            <input asp-for="Email" class="form-control" />
+       
+        <div class="form-group mb-3">
+            <label asp-for="Email"> Gmail</label>
+            <input asp-for="Email" class="form-control custom-width" />
             <span asp-validation-for="Email" class="text-danger"></span>
         </div>
 
-        <div class="form-group">
-            <label asp-for="DateOfBirth"></label>
-            <input asp-for="DateOfBirth" class="form-control datepicker" />
+        <div class="form-group mb-3">
+            <label asp-for="DateOfBirth">Date of Birth</label>
+            <input asp-for="DateOfBirth" class="form-control datepicker custom-width" />
             <span asp-validation-for="DateOfBirth" class="text-danger"></span>
         </div>
 
-
-        <div class="form-group">
-            <label asp-for="PassportFilePath"></label>
-            <input type="file" name="PassportFile" class="form-control-file" />
-            <span asp-validation-for="PassportFilePath" class="text-danger"></span>
+        <div class="form-group mb-3">
+            <label asp-for="PassportNumber">Passport Number</label>
+            <input asp-for="PassportNumber" class="form-control custom-width" />
+            <span asp-validation-for="PassportNumber" class="text-danger"></span>
         </div>
 
-        <div class="form-group">
-            <label asp-for="Nationality"></label>
-            <input asp-for="Nationality" class="form-control" />
+        <!-- Passport Photo -->
+        <div class="form-group mb-3">
+            <label asp-for="PassportPhotoPath">Upload Passport Photo</label>
+            <input type="file" name="PassportPhotoPath" class="form-control-file custom-width" />
+            <span asp-validation-for="PassportPhotoPath" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="PassportFilePath">Passport File</label>
+
+            @if (!string.IsNullOrEmpty(Model.PassportFilePath))
+            {
+                <div>
+                    <a asp-action="GetEmploymentFile" asp-route-documentPath="@Model.PassportFilePath" target="_blank">Download Passport File</a>
+                </div>
+            }
+
+            <input type="file" name="NewPassportFile" class="form-control-file custom-width" />
+
+            <span asp-validation-for="NewPassportFile" class="text-danger"></span>
+        </div>
+
+        <!-- Add similar sections for other file uploads -->
+
+     
+
+        <div class="form-group mb-3">
+            <label asp-for="Nationality">Nationality</label>
+            <input asp-for="Nationality" class="form-control custom-width" />
             <span asp-validation-for="Nationality" class="text-danger"></span>
         </div>
 
-        <div class="form-group">
-            <label asp-for="ApplicationStatus"></label>
-            <input asp-for="ApplicationStatus" class="form-control" />
-            <span asp-validation-for="ApplicationStatus" class="text-danger"></span>
-        </div>
-
-        <div class="form-group">
-            <label asp-for="IntendedArrivalDate"></label>
-            <input asp-for="IntendedArrivalDate" class="form-control datepicker" />
+        <div class="form-group mb-3">
+            <label asp-for="IntendedArrivalDate">Intended Arrival Date</label>
+            <input asp-for="IntendedArrivalDate" class="form-control datepicker custom-width" />
             <span asp-validation-for="IntendedArrivalDate" class="text-danger"></span>
         </div>
 
-        <div class="form-group">
-            <label asp-for="IntendedDepartureDate"></label>
-            <input asp-for="IntendedDepartureDate" class="form-control datepicker" />
+        <div class="form-group mb-3">
+            <label asp-for="IntendedDepartureDate">Intended Departure Date</label>
+            <input asp-for="IntendedDepartureDate" class="form-control datepicker custom-width" />
             <span asp-validation-for="IntendedDepartureDate" class="text-danger"></span>
         </div>
 
-        <div class="form-group">
-            <label asp-for="VisaTypes"></label>
-            <select asp-for="VisaTypes" asp-items="new SelectList(Model.VisaTypes, "Value", "Text")" class="form-control">
-                <option value="">Select Visa Type</option>
-            </select>
-            <span asp-validation-for="VisaTypes" class="text-danger"></span>
+
+
+        
+        <div class="form-group mb-3">
+            <label asp-for="PhoneNumber">Phone Number</label>
+            <input asp-for="PhoneNumber" class="form-control custom-width" />
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
         </div>
 
+
+        <!-- Student Related text Boxes Start-------------------------------------------- -->
+
+      <div id="studentVisaSection" class="visa-section">
+
+        <div class="form-group mb-3">
+            <label asp-for="HighestEducationLevel">Highest Education Level</label>
+            <input asp-for="HighestEducationLevel" class="form-control custom-width" />
+            <span asp-validation-for="HighestEducationLevel" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="InstitutionName">Institution Name</label>
+            <input asp-for="InstitutionName" class="form-control custom-width" />
+            <span asp-validation-for="InstitutionName" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="CourseTitle">Course Title</label>
+            <input asp-for="CourseTitle" class="form-control custom-width" />
+            <span asp-validation-for="CourseTitle" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="ExpectedStartDate">Expected Start Date</label>
+            <input asp-for="ExpectedStartDate" class="form-control datepicker custom-width" />
+            <span asp-validation-for="ExpectedStartDate" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="ProofOfFundsType">Proof of Funds Type</label>
+            <input asp-for="ProofOfFundsType" class="form-control custom-width" />
+            <span asp-validation-for="ProofOfFundsType" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="LanguageTestTaken">Language Test Taken</label>
+            <input asp-for="LanguageTestTaken" class="form-control custom-width" />
+            <span asp-validation-for="LanguageTestTaken" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="LanguageTestScore">Language Test Score</label>
+            <input asp-for="LanguageTestScore" class="form-control custom-width" />
+            <span asp-validation-for="LanguageTestScore" class="text-danger"></span>
+        </div>
+
+
+            <div class="form-group mb-3">
+                <label asp-for="ResumePath">Resume File</label>
+
+                @if (!string.IsNullOrEmpty(Model.ResumePath))
+                {
+                    <div>
+                        <a asp-action="GetEmploymentFile" asp-route-documentPath="@Model.ResumePath" target="_blank">Download Resume File</a>
+                    </div>
+                }
+
+                <input type="file" name="NewResumeFile" class="form-control-file custom-width" />
+
+                <span asp-validation-for="NewResumeFile" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="TestCardPath">Test Card File</label>
+
+                @if (!string.IsNullOrEmpty(Model.TestCardPath))
+                {
+                    <div>
+                        <a asp-action="GetTestCardFile" asp-route-documentPath="@Model.TestCardPath" target="_blank">Download Test Card File</a>
+                    </div>
+                }
+
+                <input type="file" name="NewTestCardFile" class="form-control-file custom-width" />
+
+                <span asp-validation-for="NewTestCardFile" class="text-danger"></span>
+            </div>
+
+
+      </div>
+        <!-- Student Related text Boxes End -------------------------------------------------->
+     <div id="BusinessVisaSection" class="visa-section">
+        <!-- Business Related text Boxes Start -------------------------------------------------->
+        <!-- Company Name -->
+        <div class="form-group mb-3">
+            <label asp-for="CompanyName">Company Name</label>
+            <input asp-for="CompanyName" class="form-control custom-width" />
+            <span asp-validation-for="CompanyName" class="text-danger"></span>
+        </div>
+
+        <!-- Business Title -->
+        <div class="form-group mb-3">
+            <label asp-for="BusinessTitle">Business Title</label>
+            <input asp-for="BusinessTitle" class="form-control custom-width" />
+            <span asp-validation-for="BusinessTitle" class="text-danger"></span>
+        </div>
+
+        <!-- Business Nature -->
+        <div class="form-group mb-3">
+            <label asp-for="BusinessNature">Business Nature</label>
+            <input asp-for="BusinessNature" class="form-control custom-width" />
+            <span asp-validation-for="BusinessNature" class="text-danger"></span>
+        </div>
+        <!-- Business Nature -->
+
+     </div>
+
+        <!-- Business Related text Boxes End -------------------------------------------------->
+
+      <div id="EmployeeVisaSection" class="visa-section">
+        <!-- Employee Related text Boxes start -------------------------------------------------->
+        <!-- Current Employer -->
+        <div class="form-group mb-3">
+            <label asp-for="CurrentEmployer">Current Employer</label>
+            <input asp-for="CurrentEmployer" class="form-control custom-width" />
+            <span asp-validation-for="CurrentEmployer" class="text-danger"></span>
+        </div>
+
+        <!-- Job Title -->
+        <div class="form-group mb-3">
+            <label asp-for="JobTitle">Job Title</label>
+            <input asp-for="JobTitle" class="form-control custom-width" />
+            <span asp-validation-for="JobTitle" class="text-danger"></span>
+        </div>
+
+        <!-- Monthly Salary -->
+        <div class="form-group mb-3">
+            <label asp-for="MonthlySalary">Monthly Salary</label>
+            <input asp-for="MonthlySalary" class="form-control custom-width" />
+            <span asp-validation-for="MonthlySalary" class="text-danger"></span>
+        </div>
+
+        <!-- Contract Start Date -->
+        <div class="form-group mb-3">
+            <label asp-for="ContractStartDate">Contract Start Date</label>
+            <input asp-for="ContractStartDate" class="form-control datepicker custom-width" />
+            <span asp-validation-for="ContractStartDate" class="text-danger"></span>
+        </div>
+
+       
+        <div class="form-group mb-3">
+            <label asp-for="ContractEndDate">Contract End Date</label>
+            <input asp-for="ContractEndDate" class="form-control datepicker custom-width" />
+            <span asp-validation-for="ContractEndDate" class="text-danger"></span>
+        </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="EmploymentContractPath">Employment Contract File</label>
+
+                @if (!string.IsNullOrEmpty(Model.EmploymentContractPath))
+                {
+                    <div>
+                        <a asp-action="GetEmploymentFile" asp-route-documentPath="@Model.EmploymentContractPath" target="_blank">Download Employment Contract File</a>
+                    </div>
+                }
+
+                <input type="file" name="NewEmploymentContractFile" class="form-control-file custom-width" />
+
+                <span asp-validation-for="NewEmploymentContractFile" class="text-danger"></span>
+            </div>
+
+
+      </div>
+
+        <!-- Employee Related text Boxes End -------------------------------------------------->
+      <div id="TouristVisaSection" class="visa-section">
+        <!-- Torist Related text Boxes start -------------------------------------------------->
+
+            <div class="form-group mb-3">
+                <label asp-for="TravelItineraryPath">Travel Itinerary File</label>
+
+                @if (!string.IsNullOrEmpty(Model.TravelItineraryPath))
+                {
+                    <div>
+                        <a asp-action="GetTravelFile" asp-route-documentPath="@Model.TravelItineraryPath" target="_blank">Download Travel Itinerary File</a>
+                    </div>
+                }
+
+                <input type="file" name="NewTravelItineraryFile" class="form-control-file custom-width" />
+
+                <span asp-validation-for="NewTravelItineraryFile" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="HotelReservationPath">Hotel Reservation File</label>
+
+                @if (!string.IsNullOrEmpty(Model.HotelReservationPath))
+                {
+                    <div>
+                        <a asp-action="GetHotelReservationFile" asp-route-documentPath="@Model.HotelReservationPath" target="_blank">Download Hotel Reservation File</a>
+                    </div>
+                }
+
+                <input type="file" name="NewHotelReservationFile" class="form-control-file custom-width" />
+
+                <span asp-validation-for="NewHotelReservationFile" class="text-danger"></span>
+            </div>
+
+       </div>
+        <!-- Torist Related text Boxes End -------------------------------------------------->
+
+
+
+        <script>
+            $(document).ready(function () {
+              
+                function showVisaSections() {
+                    var visaTypeId = $("#VisaTypeId").val();
+
+                   
+                    $(".visa-section").hide();
+
+                
+                    switch (visaTypeId) {
+                        case "1": 
+                            $("#studentVisaSection").show();
+                            break;
+                        case "2": 
+                            $("#TouristVisaSection").show();
+                            break;
+                        case "3": 
+                            $("#EmployeeVisaSection").show();
+                            break;
+                        case "4": 
+                            $("#BusinessVisaSection").show();
+                            break;
+                        d
+                    }
+                }
+
+                showVisaSections();
+
+                $("#VisaTypeId").change(showVisaSections);
+            });
+        </script>
         <button type="submit" class="btn btn-dark">Submit</button>
     </form>
 </div>
-
-
-
-
