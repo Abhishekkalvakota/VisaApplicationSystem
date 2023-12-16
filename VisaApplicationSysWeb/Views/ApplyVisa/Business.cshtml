@@ -1,0 +1,123 @@
+﻿@model VisaApplicationSysWeb.Models.BusinessVisaForm
+
+<style>
+
+    .custom-width {
+        width: 500px
+    }
+</style>
+
+<div class="container py-5">
+    <form asp-action="Business" asp-controller="ApplyVisa" method="post" enctype="multipart/form-data" id="businessVisaForm">
+        <input type="hidden" asp-for="VisaTypeId" value="@Model.VisaTypeId" />
+        <!-- Full Name -->
+        <div class="form-group mb-3">
+            <label asp-for="FullName">Full Name</label>
+            <input asp-for="FullName" class="form-control custom-width" />
+            <span asp-validation-for="FullName" class="text-danger"></span>
+        </div>
+
+        <!-- Date of Birth -->
+        <div class="form-group mb-3">
+            <label asp-for="DateOfBirth">Date of Birth</label>
+            <input asp-for="DateOfBirth" class="form-control datepicker custom-width" />
+            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+        </div>
+
+        <!-- Nationality -->
+        <div class="form-group mb-3">
+            <label asp-for="Nationality">Nationality</label>
+            <input asp-for="Nationality" class="form-control custom-width" />
+            <span asp-validation-for="Nationality" class="text-danger"></span>
+        </div>
+
+        <!-- Passport Number -->
+        <div class="form-group mb-3">
+            <label asp-for="PassportNumber">Passport Number</label>
+            <input asp-for="PassportNumber" class="form-control custom-width" />
+            <span asp-validation-for="PassportNumber" class="text-danger"></span>
+        </div>
+
+        <!-- Current Address -->
+        <div class="form-group mb-3">
+            <label asp-for="CurrentAddress">Current Address</label>
+            <input asp-for="CurrentAddress" class="form-control custom-width" />
+            <span asp-validation-for="CurrentAddress" class="text-danger"></span>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group mb-3">
+            <label asp-for="Email">Email</label>
+            <input asp-for="Email" class="form-control custom-width" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <!-- Phone Number -->
+        <div class="form-group mb-3">
+            <label asp-for="PhoneNumber">Phone Number</label>
+            <input asp-for="PhoneNumber" class="form-control custom-width" />
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+
+        <!-- Company Name -->
+        <div class="form-group mb-3">
+            <label asp-for="CompanyName">Company Name</label>
+            <input asp-for="CompanyName" class="form-control custom-width" />
+            <span asp-validation-for="CompanyName" class="text-danger"></span>
+        </div>
+
+        <!-- Business Title -->
+        <div class="form-group mb-3">
+            <label asp-for="BusinessTitle">Business Title</label>
+            <input asp-for="BusinessTitle" class="form-control custom-width" />
+            <span asp-validation-for="BusinessTitle" class="text-danger"></span>
+        </div>
+
+        <!-- Business Nature -->
+        <div class="form-group mb-3">
+            <label asp-for="BusinessNature">Business Nature</label>
+            <input asp-for="BusinessNature" class="form-control custom-width" />
+            <span asp-validation-for="BusinessNature" class="text-danger"></span>
+        </div>
+
+        <!-- Intended Arrival Date -->
+        <div class="form-group mb-3">
+            <label asp-for="IntendedArrivalDate">Intended Arrival Date</label>
+            <input asp-for="IntendedArrivalDate" class="form-control datepicker custom-width" />
+            <span asp-validation-for="IntendedArrivalDate" class="text-danger"></span>
+        </div>
+
+        <!-- Intended Departure Date -->
+        <div class="form-group mb-3">
+            <label asp-for="IntendedDepartureDate">Intended Departure Date</label>
+            <input asp-for="IntendedDepartureDate" class="form-control datepicker custom-width" />
+            <span asp-validation-for="IntendedDepartureDate" class="text-danger"></span>
+        </div>
+
+        <!-- Passport Photo -->
+        <div class="form-group mb-3">
+            <label asp-for="PassportPhotoPath">Upload Passport Photo</label>
+            <input type="file" name="PassportPhotoPath" class="form-control-file custom-width" />
+            <span asp-validation-for="PassportPhotoPath" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="Passportpath">Upload Passport </label>
+            <input type="file" name="Passportpath" class="form-control-file custom-width" />
+            <span asp-validation-for="Passportpath" class="text-danger"></span>
+        </div>
+
+     
+
+        <button type="submit" class="btn btn-dark">Submit</button>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+           
+            $('#businessVisaForm').validate();
+        });
+    </script>
+}

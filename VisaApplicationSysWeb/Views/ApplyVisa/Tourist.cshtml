@@ -1,0 +1,113 @@
+﻿@model VisaApplicationSysWeb.Models.TouristVisaForm
+
+<style>
+
+    .custom-width {
+        width: 500px
+    }
+</style>
+
+<div class="container py-5">
+    <form asp-action="Tourist" asp-controller="ApplyVisa" method="post" enctype="multipart/form-data" id="touristVisaForm">
+        <input type="hidden" asp-for="VisaTypeId" value="@Model.VisaTypeId" />
+        <!-- Full Name -->
+        <div class="form-group mb-3">
+            <label asp-for="FullName">Full Name</label>
+            <input asp-for="FullName" class="form-control custom-width" />
+            <span asp-validation-for="FullName" class="text-danger"></span>
+        </div>
+
+        <!-- Date of Birth -->
+        <div class="form-group mb-3">
+            <label asp-for="DateOfBirth">Date of Birth</label>
+            <input asp-for="DateOfBirth" class="form-control datepicker custom-width" />
+            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+        </div>
+
+        <!-- Nationality -->
+        <div class="form-group mb-3">
+            <label asp-for="Nationality">Nationality</label>
+            <input asp-for="Nationality" class="form-control custom-width" />
+            <span asp-validation-for="Nationality" class="text-danger"></span>
+        </div>
+
+        <!-- Passport Number -->
+        <div class="form-group mb-3">
+            <label asp-for="PassportNumber">Passport Number</label>
+            <input asp-for="PassportNumber" class="form-control custom-width" />
+            <span asp-validation-for="PassportNumber" class="text-danger"></span>
+        </div>
+
+        <!-- Current Address -->
+        <div class="form-group mb-3">
+            <label asp-for="CurrentAddress">Current Address</label>
+            <input asp-for="CurrentAddress" class="form-control custom-width" />
+            <span asp-validation-for="CurrentAddress" class="text-danger"></span>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group mb-3">
+            <label asp-for="Email">Email</label>
+            <input asp-for="Email" class="form-control custom-width" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <!-- Phone Number -->
+        <div class="form-group mb-3">
+            <label asp-for="PhoneNumber">Phone Number</label>
+            <input asp-for="PhoneNumber" class="form-control custom-width" />
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+
+        <!-- Intended Arrival Date -->
+        <div class="form-group mb-3">
+            <label asp-for="IntendedArrivalDate">Intended Arrival Date</label>
+            <input asp-for="IntendedArrivalDate" class="form-control datepicker custom-width" />
+            <span asp-validation-for="IntendedArrivalDate" class="text-danger"></span>
+        </div>
+
+        <!-- Intended Departure Date -->
+        <div class="form-group mb-3">
+            <label asp-for="IntendedDepartureDate">Intended Departure Date</label>
+            <input asp-for="IntendedDepartureDate" class="form-control datepicker custom-width" />
+            <span asp-validation-for="IntendedDepartureDate" class="text-danger"></span>
+        </div>
+
+        <!-- Passport Photo -->
+        <div class="form-group mb-3">
+            <label asp-for="PassportPhotoPath">Upload Passport Photo</label>
+            <input type="file" name="PassportPhotoPath" class="form-control-file custom-width" />
+            <span asp-validation-for="PassportPhotoPath" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="Passportpath">Upload Passport </label>
+            <input type="file" name="Passportpath" class="form-control-file custom-width" />
+            <span asp-validation-for="Passportpath" class="text-danger"></span>
+        </div>
+
+        <!-- Travel Itinerary -->
+        <div class="form-group mb-3">
+            <label asp-for="TravelItineraryPath">Upload Travel Itinerary</label>
+            <input type="file" name="TravelItineraryPath" class="form-control-file custom-width" />
+            <span asp-validation-for="TravelItineraryPath" class="text-danger"></span>
+        </div>
+
+        <!-- Hotel Reservation -->
+        <div class="form-group mb-3">
+            <label asp-for="HotelReservationPath">Upload Hotel Reservation</label>
+            <input type="file" name="HotelReservationPath" class="form-control-file custom-width" />
+            <span asp-validation-for="HotelReservationPath" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-dark">Submit</button>
+    </form>
+</div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+           
+            $('#touristVisaForm').validate();
+        });
+    </script>
+}

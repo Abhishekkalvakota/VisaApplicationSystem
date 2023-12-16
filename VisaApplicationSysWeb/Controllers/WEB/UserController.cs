@@ -1,18 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using System.Text;
 using VisaApplicationSysWeb.Data;
 using VisaApplicationSysWeb.Models;
-using Newtonsoft.Json;
 
 namespace VisaApplicationSysWeb.Controllers.WEB
 {
     public class UserController : Controller
     {
-        private readonly VisaDBContext dBContext;
+        private readonly VisaDBContext _dbContext;
+        private readonly IWebHostEnvironment _environment;
 
-        public UserController(VisaDBContext dbContext)
+       
+
+        public UserController(VisaDBContext dbContext, IWebHostEnvironment environment)
         {
-            dBContext = dbContext;
+            _dbContext = dbContext;
+            _environment = environment;
+          
         }
 
         [HttpGet]
@@ -35,7 +41,7 @@ namespace VisaApplicationSysWeb.Controllers.WEB
 
                     if (response.IsSuccessStatusCode)
                     {
-                        TempData["SuccessMessage"] = "Registration successful Please Login!";
+                        TempData["SuccessMessage"] = "Registration Successful Please Login!";
                         return RedirectToAction("Login");
                     }
                     else
@@ -57,6 +63,9 @@ namespace VisaApplicationSysWeb.Controllers.WEB
         [HttpGet]
         public IActionResult Login()
         {
+
+            string successMessage = TempData["SuccessMessage"] as string;
+            ViewBag.SuccessMessage = successMessage;
             return View();
         }
 
@@ -75,7 +84,8 @@ namespace VisaApplicationSysWeb.Controllers.WEB
 
                         if (response.IsSuccessStatusCode)
                         {
-                            TempData["SuccessMessage"] = "Registration successful Please Login!";
+                            TempData["SuccessMessage"] = "Welcome back! You have successfully logged in.";
+
                             return RedirectToAction("Index", "Home");
                         }
                         else
@@ -95,45 +105,183 @@ namespace VisaApplicationSysWeb.Controllers.WEB
             }
         }
 
+
         [HttpGet]
-        public async Task<IActionResult> Profile()
+        public async Task<IActionResult> Profile(int applicantId, int visaTypeId)
         {
             try
             {
-                var visaTypes = await GetVisaTypesAsync();
+                using (var httpClient = new HttpClient())
+                {
+                    var apiUrl = $"http://localhost:5166/api/UserAPI/Getapplicantdata?parameter1={applicantId}&parameter2={visaTypeId}";
 
-                ViewBag.VisaTypes = new SelectList(visaTypes, "Value", "Text");
+                    var response = await httpClient.GetAsync(apiUrl);
+                    response.EnsureSuccessStatusCode();
 
-                return View();
+                    var content = await response.Content.ReadAsStringAsync();
+                    var data = JsonConvert.DeserializeObject<List<ApplicantProfile>>(content);
+                    return View(data);
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                return View("ErrorView", $"Error during HTTP request: {ex.Message}");
+            }
+            catch (JsonException ex)
+            {
+                
+                return View("ErrorView", $"Error during JSON deserialization: {ex.Message}");
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError(string.Empty, "Server Error. Please contact administrator.");
-                return View();
+                return View("ErrorView", $"An unexpected error occurred: {ex.Message}");
             }
         }
 
-        public async Task<List<VisaType>> GetVisaTypesAsync()
+        [HttpGet]
+        public IActionResult GetEmploymentFile(string documentPath)
         {
-            using (var client = new HttpClient())
+            
+            string fileName = Path.GetFileName(documentPath);
+
+            if (System.IO.File.Exists(documentPath))
             {
-                client.BaseAddress = new Uri("http://localhost:5166/api/UserAPI/");
+                return PhysicalFile(documentPath, "application/octet-stream", fileName);
+            }
+            else
+            {
+                
+                return NotFound();
+            }
+        }
 
-                var response = await client.GetAsync("GetVisaTypes"); // Adjust the API endpoint accordingly
+        [HttpPut]
+        public async Task<IActionResult> EditProfile(int applicantId, int visaTypeId, ApplicantProfile model,[FromForm] IFormFile NewPassportFile,[FromForm] IFormFile NewEmploymentContractFile,[FromForm] IFormFile NewResumeFile,[FromForm] IFormFile NewTestCardFile,[FromForm] IFormFile NewTravelItineraryFile,[FromForm] IFormFile NewHotelReservationFile)
+        {
+            try
+            {
+                
+                model.PassportFilePath = HandleFileUpdate(NewPassportFile, model.PassportFilePath);
+                model.EmploymentContractPath = HandleFileUpdate(NewEmploymentContractFile, model.EmploymentContractPath);
+                model.ResumePath = HandleFileUpdate(NewResumeFile, model.ResumePath);
+                model.TestCardPath = HandleFileUpdate(NewTestCardFile, model.TestCardPath);
+                model.TravelItineraryPath = HandleFileUpdate(NewTravelItineraryFile, model.TravelItineraryPath);
+                model.HotelReservationPath = HandleFileUpdate(NewHotelReservationFile, model.HotelReservationPath);
 
-                if (response.IsSuccessStatusCode)
+                using (var httpClient = new HttpClient())
                 {
-                    string responseData = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<List<VisaType>>(responseData);
+                    var apiUrl = $"http://localhost:5166/api/UserAPI/UpdateApplicantData?applicantId={applicantId}&visaTypeId={visaTypeId}";
+
+                    var jsonContent = JsonConvert.SerializeObject(model);
+                    var httpContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+                  
+                    var response = await httpClient.PutAsync(apiUrl, httpContent);
+                    response.EnsureSuccessStatusCode();
+
+                  
+                    return RedirectToAction("SuccessView");
                 }
-                else
+            }
+            catch (HttpRequestException ex)
+            {
+                return View("ErrorView", $"Error during HTTP request: {ex.Message}");
+            }
+            catch (JsonException ex)
+            {
+                return View("ErrorView", $"Error during JSON serialization: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                return View("ErrorView", $"An unexpected error occurred: {ex.Message}");
+            }
+        }
+
+        private string HandleFileUpdate(IFormFile newFile, string currentFilePath)
+        {
+            string updatedFilePath = currentFilePath;
+
+           
+            if (newFile != null && newFile.Length > 0)
+            {
+                
+                if (!string.IsNullOrEmpty(currentFilePath) && System.IO.File.Exists(currentFilePath))
                 {
-                    // Log the error instead of writing to the console
-                    Console.WriteLine($"Failed to retrieve Visa Types. Status Code: {response.StatusCode}");
-                    return new List<VisaType>();
+                    System.IO.File.Delete(currentFilePath);
+                }
+                var newFileName = Path.GetFileName(newFile.FileName);
+                var newFilePath = Path.Combine(_environment.WebRootPath, "Employment", newFileName);
+
+                using (var fileStream = new FileStream(newFilePath, FileMode.Create))
+                {
+                    newFile.CopyTo(fileStream);
+                }
+                updatedFilePath = newFilePath;
+            }
+
+            return updatedFilePath;
+        }
+
+        public IActionResult GetApplicantData(int applicantId, int visaTypeId)
+        {
+            try
+            {
+                using (var httpClient = new HttpClient())
+                {
+                    var apiUrl = $"http://localhost:5166/api/UserAPI/GetApplicantData?applicantId={applicantId}&visaTypeId={visaTypeId}";
+
+                    var response = httpClient.GetAsync(apiUrl).Result;
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var content = response.Content.ReadAsStringAsync().Result;
+
+                        var viewModel = JsonConvert.DeserializeObject<ApplicantProfile>(content);
+
+                        return View("Profile", viewModel);
+                    }
+                    else
+                    {
+                        return View("ErrorView", $"API request failed with status code: {response.StatusCode}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+             
+                return View("ErrorView", $"An error occurred: {ex.Message}");
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetVisaStus(int applicantId)
+        {
+            using (var httpClient = new HttpClient())
+            {
+               
+                var apiEndpoint = "http://localhost:5166//api/UserAPI/GetVisaStatus" + applicantId;
+
+                using (var response = await httpClient.GetAsync(apiEndpoint))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var jsonString = await response.Content.ReadAsStringAsync();
+                        var visaStatusModel = JsonConvert.DeserializeObject<VisaStatusModel>(jsonString);
+
+                        
+                        return View(visaStatusModel);
+                    }
+                    else
+                    {
+                        
+                        return View("Error");
+                    }
                 }
             }
         }
+
+
+
     }
 }
 

@@ -6,6 +6,8 @@ namespace VisaApplicationSysWeb.Controllers.WEB
     {
         public IActionResult Index()
         {
+            string successMessage = TempData["SuccessMessage"] as string;
+            ViewBag.SuccessMessage = successMessage;
             return View();
         }
     }

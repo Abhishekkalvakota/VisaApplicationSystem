@@ -1,0 +1,135 @@
+﻿@model VisaApplicationSysWeb.Models.EmploymentVisaForm
+
+<style>
+
+    .custom-width {
+        width: 500px
+    }
+</style>
+
+<div class="container py-5 ">
+    <form asp-action="Employment" asp-controller="ApplyVisa" method="post" enctype="multipart/form-data" id="employmentVisaForm">
+        <input type="hidden" asp-for="VisaTypeId" value="@Model.VisaTypeId" />
+        <!-- Full Name -->
+        <div class="form-group mb-3">
+            <label asp-for="FullName">Full Name</label>
+            <input asp-for="FullName" class="form-control custom-width" />
+            <span asp-validation-for="FullName" class="text-danger"></span>
+        </div>
+
+        <!-- Date of Birth -->
+        <div class="form-group mb-3">
+            <label asp-for="DateOfBirth">Date of Birth</label>
+            <input asp-for="DateOfBirth" class="form-control datepicker custom-width" />
+            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+        </div>
+
+        <!-- Nationality -->
+        <div class="form-group mb-3">
+            <label asp-for="Nationality">Nationality</label>
+            <input asp-for="Nationality" class="form-control custom-width" />
+            <span asp-validation-for="Nationality" class="text-danger"></span>
+        </div>
+
+        <!-- Passport Number -->
+        <div class="form-group mb-3">
+            <label asp-for="PassportNumber">Passport Number</label>
+            <input asp-for="PassportNumber" class="form-control custom-width" />
+            <span asp-validation-for="PassportNumber" class="text-danger"></span>
+        </div>
+
+        <!-- Current Address -->
+        <div class="form-group mb-3">
+            <label asp-for="CurrentAddress">Current Address</label>
+            <input asp-for="CurrentAddress" class="form-control custom-width" />
+            <span asp-validation-for="CurrentAddress" class="text-danger"></span>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group mb-3">
+            <label asp-for="Email">Email</label>
+            <input asp-for="Email" class="form-control custom-width" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <!-- Phone Number -->
+        <div class="form-group mb-3">
+            <label asp-for="PhoneNumber">Phone Number</label>
+            <input asp-for="PhoneNumber" class="form-control custom-width" />
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+
+        <!-- Current Employer -->
+        <div class="form-group mb-3">
+            <label asp-for="CurrentEmployer">Current Employer</label>
+            <input asp-for="CurrentEmployer" class="form-control custom-width" />
+            <span asp-validation-for="CurrentEmployer" class="text-danger"></span>
+        </div>
+
+        <!-- Job Title -->
+        <div class="form-group mb-3">
+            <label asp-for="JobTitle">Job Title</label>
+            <input asp-for="JobTitle" class="form-control custom-width" />
+            <span asp-validation-for="JobTitle" class="text-danger"></span>
+        </div>
+
+        <!-- Monthly Salary -->
+        <div class="form-group mb-3">
+            <label asp-for="MonthlySalary">Monthly Salary</label>
+            <input asp-for="MonthlySalary" class="form-control custom-width" />
+            <span asp-validation-for="MonthlySalary" class="text-danger"></span>
+        </div>
+
+        <!-- Contract Start Date -->
+        <div class="form-group mb-3">
+            <label asp-for="ContractStartDate">Contract Start Date</label>
+            <input asp-for="ContractStartDate" class="form-control datepicker custom-width" />
+            <span asp-validation-for="ContractStartDate" class="text-danger"></span>
+        </div>
+
+        <!-- Contract End Date -->
+        <div class="form-group mb-3">
+            <label asp-for="ContractEndDate">Contract End Date</label>
+            <input asp-for="ContractEndDate" class="form-control datepicker custom-width" />
+            <span asp-validation-for="ContractEndDate" class="text-danger"></span>
+        </div>
+
+        <!-- Passport Photo -->
+        <div class="form-group mb-3">
+            <label asp-for="PassportPhotoPath">Upload Passport Photo</label>
+            <input type="file" name="PassportPhotoPath" class="form-control-file custom-width" />
+            <span asp-validation-for="PassportPhotoPath" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="Passportpath">Upload Passport </label>
+            <input type="file" name="Passportpath" class="form-control-file custom-width" />
+            <span asp-validation-for="Passportpath" class="text-danger"></span>
+        </div>
+
+        <!-- Resume -->
+        <div class="form-group mb-3">
+            <label asp-for="ResumePath">Upload Resume</label>
+            <input type="file" name="ResumePath" class="form-control-file custom-width" />
+            <span asp-validation-for="ResumePath" class="text-danger"></span>
+        </div>
+
+        <!-- Employment Contract -->
+        <div class="form-group mb-3">
+            <label asp-for="EmploymentContractPath">Upload Employment Contract</label>
+            <input type="file" name="EmploymentContractPath" class="form-control-file custom-width" />
+            <span asp-validation-for="EmploymentContractPath" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-dark">Submit</button>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+           
+            $('#employmentVisaForm').validate();
+        });
+    </script>
+}
