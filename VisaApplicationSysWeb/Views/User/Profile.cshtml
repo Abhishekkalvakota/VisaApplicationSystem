@@ -5,13 +5,14 @@
     .custom-width {
         width: 500px 
     }
+
+   
 </style>
 
 <div class="container py-5">
 
-    <form asp-action="Profile" asp-controller="User" method="post" enctype="multipart/form-data">
+    <form asp-action="EditProfile" asp-controller="User" method="post" id="FormId" enctype="multipart/form-data">
 
-        <input type="hidden" id="VisaTypeId" name="VisaTypeId" value="@Model.VisaTypeId" />
 
         <div class="form-group mb-3">
             <label asp-for="FullName"> FullName</label>
@@ -39,7 +40,7 @@
         </div>
 
         <!-- Passport Photo -->
-        <div class="form-group mb-3">
+        <div class="form-group hide mb-3">
             <label asp-for="PassportPhotoPath">Upload Passport Photo</label>
             <input type="file" name="PassportPhotoPath" class="form-control-file custom-width" />
             <span asp-validation-for="PassportPhotoPath" class="text-danger"></span>
@@ -295,37 +296,71 @@
 
 
         <script>
-            $(document).ready(function () {
-              
-                function showVisaSections() {
-                    var visaTypeId = $("#VisaTypeId").val();
+            function showVisaSections() {
+                var visaTypeId = @ViewBag.VisaTypeId;
 
-                   
-                    $(".visa-section").hide();
+                $(".visa-section").hide();
+
+                switch (visaTypeId) {
+                    case 1:
+                        $("#studentVisaSection").show();
+                        $("#TouristVisaSection").hide();
+                        $("#EmployeeVisaSection").hide();
+                        $("#BusinessVisaSection").hide();
+                        break;
+                    case 2:
+                        $("#TouristVisaSection").show();
+                        $("#studentVisaSection").hide();
+                        $("#EmployeeVisaSection").hide();
+                        $("#BusinessVisaSection").hide();
+                        break;
+                    case 3:
+                        $("#EmployeeVisaSection").show();
+                        $("#TouristVisaSection").hide();
+                        $("#studentVisaSection").hide();
+                        $("#BusinessVisaSection").hide();
+                        break;
+                    case 4:
+                        $("#BusinessVisaSection").show();
+                        $("#EmployeeVisaSection").hide();
+                        $("#TouristVisaSection").hide();
+                        $("#studentVisaSection").hide();
+                        break;
+                    default:
+                        
+                        break;
+                }
+            }
+
+            showVisaSections();
+
+            $("#VisaTypeId").change(showVisaSections);
+        </script>
+        <button type="button" class="btn btn-dark" id="updateButton">Update</button>
+
+        <script>
+            $("#updateButton").click(function () {
+                debugger;
+
+               
+                var applicantId = @Model.ApplicantId; 
+
+               
+              
+
+               
+                var formData = $("#FormId").serialize();
 
                 
-                    switch (visaTypeId) {
-                        case "1": 
-                            $("#studentVisaSection").show();
-                            break;
-                        case "2": 
-                            $("#TouristVisaSection").show();
-                            break;
-                        case "3": 
-                            $("#EmployeeVisaSection").show();
-                            break;
-                        case "4": 
-                            $("#BusinessVisaSection").show();
-                            break;
-                        d
-                    }
-                }
+                var encodedFormData = encodeURIComponent(formData);
 
-                showVisaSections();
+                
+                var url = "/User/EditProfile?applicantId=" + applicantId + "&visaTypeId=" + @ViewBag.VisaTypeId + "&" + encodedFormData;
 
-                $("#VisaTypeId").change(showVisaSections);
+                
+                window.location.href = url;
             });
         </script>
-        <button type="submit" class="btn btn-dark">Submit</button>
+
     </form>
 </div>

@@ -1,14 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using VisaApplicationSysWeb.Data;
 using VisaApplicationSysWeb.Models;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace VisaApplicationSysWeb.Controllers.API
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class UserAPIController : ControllerBase
     {
         private readonly VisaDBContext dBContext;
@@ -85,7 +86,8 @@ namespace VisaApplicationSysWeb.Controllers.API
             return BadRequest(ModelState);
         }
 
-        public IActionResult GetApplicantData(int applicantId, int visaTypeId)
+        [HttpGet("GetApplicantData")]
+        public IActionResult GetApplicantData([FromQuery] int applicantId, [FromQuery] int visaTypeId)
         {
             try
             {
@@ -128,12 +130,17 @@ namespace VisaApplicationSysWeb.Controllers.API
         }
 
         private object GetApplicantData<TEntity>(DbSet<TEntity> dbSet, int applicantId)
-            where TEntity : class
+    where TEntity : class
         {
-            return dbSet
-                .Where(p => EF.Property<int>(p, "ApplicantId") == applicantId)
-                .ToList(); 
+            var entityType = dbSet.EntityType.ClrType;
+            var parameter = Expression.Parameter(entityType, "p");
+            var property = Expression.Property(parameter, "ApplicantID");
+            var equality = Expression.Equal(property, Expression.Constant(applicantId));
+            var lambda = Expression.Lambda<Func<TEntity, bool>>(equality, parameter);
+
+            return dbSet.Where(lambda).ToList();
         }
+
 
         [HttpPut]
         [Route("api/UserAPI/UpdateApplicantData")]
@@ -272,8 +279,9 @@ namespace VisaApplicationSysWeb.Controllers.API
             }
         }
 
-        [HttpGet("{applicantId}")]
-        public IActionResult GetVisaStatus(int applicantId)
+
+        [HttpGet("GetVisaStatus/{applicantId}")]
+        public IActionResult GetVisaStatusByURL(int applicantId)
         {
             var visaStatusModel = dBContext.tblVisaStatus
                 .FirstOrDefault(model => model.ApplicantID == applicantId);
@@ -285,6 +293,7 @@ namespace VisaApplicationSysWeb.Controllers.API
 
             return Ok(visaStatusModel);
         }
+
     }
 
 }

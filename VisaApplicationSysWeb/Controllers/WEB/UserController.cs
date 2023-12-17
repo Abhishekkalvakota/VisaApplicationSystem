@@ -223,13 +223,29 @@ namespace VisaApplicationSysWeb.Controllers.WEB
             return updatedFilePath;
         }
 
-        public IActionResult GetApplicantData(int applicantId, int visaTypeId)
+        public IActionResult GetApplicantData()
         {
+            var applicants = _dbContext.tblApplicant.ToList();
+
+            int applicantId = 0;
+
+            int visatypeid = 0;
+
+            foreach (var applicant in applicants)
+            {
+                if (applicant.IsVisaApplied)
+                {
+                    applicantId = applicant.ApplicantID;
+                    visatypeid = applicant.VisaTypeId;
+                    break;
+                }
+            }
+
             try
             {
                 using (var httpClient = new HttpClient())
                 {
-                    var apiUrl = $"http://localhost:5166/api/UserAPI/GetApplicantData?applicantId={applicantId}&visaTypeId={visaTypeId}";
+                    var apiUrl = $"http://localhost:5166/api/UserAPI/GetApplicantData?applicantId={applicantId}&visaTypeId={visatypeid}";
 
                     var response = httpClient.GetAsync(apiUrl).Result;
 
@@ -237,8 +253,12 @@ namespace VisaApplicationSysWeb.Controllers.WEB
                     {
                         var content = response.Content.ReadAsStringAsync().Result;
 
-                        var viewModel = JsonConvert.DeserializeObject<ApplicantProfile>(content);
+                        var viewModelList = JsonConvert.DeserializeObject<List<ApplicantProfile>>(content);
 
+                        // Assuming you want to display the first item in the list
+                        var viewModel = viewModelList.FirstOrDefault();
+
+                        ViewBag.VisaTypeId = visatypeid;
                         return View("Profile", viewModel);
                     }
                     else
@@ -255,48 +275,49 @@ namespace VisaApplicationSysWeb.Controllers.WEB
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetVisaStus(int applicantId)
+        public async Task<IActionResult> GetVisaStatus()
         {
+            var applicants = _dbContext.tblApplicant.ToList();
 
-            var result = _dbContext.tblApplicant.ToList();
+            int applicantId = 0;
 
-
+            foreach (var applicant in applicants)
+            {
+                if (applicant.IsVisaApplied)
+                {
+                    applicantId = applicant.ApplicantID;
+                    break;
+                }
+            }
             using (var httpClient = new HttpClient())
             {
-               
-                var apiEndpoint = "http://localhost:5166//api/UserAPI/GetVisaStatus" + applicantId;
+                var apiEndpoint = $"http://localhost:5166/api/UserAPI/GetVisaStatus/{applicantId}";
 
-                using (var response = await httpClient.GetAsync(apiEndpoint))
+                try
                 {
+                    var response = await httpClient.GetAsync(apiEndpoint);
+
                     if (response.IsSuccessStatusCode)
                     {
                         var jsonString = await response.Content.ReadAsStringAsync();
                         var visaStatusModel = JsonConvert.DeserializeObject<VisaStatusModel>(jsonString);
 
-                        
                         return View(visaStatusModel);
                     }
                     else
                     {
-                        
                         return View("Error");
                     }
+                }
+                catch (HttpRequestException)
+                {
+                    // Handle HTTP request exception
+                    return View("Error");
                 }
             }
         }
 
-        public IActionResult GetApplicantData()
-        {
-            var applicants = GetApplicant();
 
-            return Json(new { Applicants = applicants });
-        }
-
-        private List<Applicant> GetApplicant()
-        {
-           
-            return _dbContext.tblApplicant.ToList();
-        }
 
     }
 }

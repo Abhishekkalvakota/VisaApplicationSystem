@@ -29,13 +29,14 @@ namespace VisaApplicationSysWeb.Controllers.API
             {
                 try
 {
-                    
+
                     var newApplicant = new Applicant
                     {
                         FullName = model.FullName,
                         Email = model.Email,
                         VisaType = "Student",
-                        VisaTypeId = 1
+                        VisaTypeId = 1,
+                        IsVisaApplied = true
                     };
 
                     _dbContext.tblApplicant.Add(newApplicant);
@@ -112,7 +113,8 @@ namespace VisaApplicationSysWeb.Controllers.API
                         FullName = model.FullName,
                         Email = model.Email,
                         VisaType = "Tourist", 
-                        VisaTypeId = 2 
+                        VisaTypeId = 2,
+                        IsVisaApplied = true
                     };
 
                     _dbContext.tblApplicant.Add(newApplicant);
@@ -148,7 +150,7 @@ namespace VisaApplicationSysWeb.Controllers.API
                         TravelItineraryPath = model.TravelItineraryPath,
                         HotelReservationPath = model.HotelReservationPath,
                         Passportpath = model.Passportpath,
-                        IsVisaApplied = true,
+                       
                         ApplicantID = newApplicant.ApplicantID
                     };
 
@@ -204,7 +206,8 @@ namespace VisaApplicationSysWeb.Controllers.API
                         FullName = model.FullName,
                         Email = model.Email,
                         VisaType = "Employment",
-                        VisaTypeId = 3
+                        VisaTypeId = 3,
+                        IsVisaApplied = true
                     };
 
 
@@ -258,7 +261,8 @@ namespace VisaApplicationSysWeb.Controllers.API
                         FullName = model.FullName,
                         Email = model.Email,
                         VisaType = "Business", 
-                        VisaTypeId = 4
+                        VisaTypeId = 4,
+                         IsVisaApplied = true
                     };
 
                     _dbContext.tblApplicant.Add(newApplicant);

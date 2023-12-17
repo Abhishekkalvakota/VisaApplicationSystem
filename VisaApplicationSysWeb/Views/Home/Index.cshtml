@@ -51,6 +51,62 @@
         }
     </style>
 
+    <script>
+        var applicants; // Declare the applicants variable in a global scope
+
+        $(document).ready(function () {
+            debugger;
+            loadTable();
+        });
+
+        function loadTable() {
+            $.ajax({
+                url: '/User/GetApplicantData',
+                type: 'GET',
+                success: function (data) {
+                    applicants = data.applicants; // Assign the value to the global variable
+
+                    if (applicants && applicants.length > 0) {
+                        var isVisaApplied = applicants[0].IsVisaApplied;
+                        updateNavigationLinks(isVisaApplied);
+                        update(isVisaApplied);
+                    }
+                },
+                error: function () {
+                    console.error('Error loading table data.');
+                }
+            });
+        }
+
+        function updateNavigationLinks(isVisaApplied) {
+            var profileLink = $('#profileLink');
+            var visaStatusLink = $('#visaStatusLink');
+
+            if (isVisaApplied) {
+                profileLink.show();
+                visaStatusLink.show();
+            } else {
+                profileLink.hide();
+                visaStatusLink.hide();
+            }
+        }
+
+        function update(isVisaApplied) {
+            var profileLink = $('#profileLink');
+            var visaStatusLink = $('#visaStatusLink');
+
+            if (isVisaApplied) {
+                var visatypeId = applicants[0].VisaTypeId;
+                var applicantId = applicants[0].ApplicantID;
+
+                profileLink.attr('href', `/User/Profile?visatypeId=${visatypeId}&applicantId=${applicantId}`);
+                visaStatusLink.attr('href', `/User/VisaStatus?applicantId=${applicantId}`);
+            } else {
+                profileLink.attr('href', '/User/DefaultProfile');
+                visaStatusLink.attr('href', '/User/DefaultVisaStatus');
+            }
+        }
+    </script>
 
   
 
