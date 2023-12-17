@@ -11,7 +11,7 @@
 
 <div class="container py-5">
 
-    <form asp-action="EditProfile" asp-controller="User" method="post" id="FormId" enctype="multipart/form-data">
+    <form asp-action="Profile" asp-controller="User" method="post" id="FormId" enctype="multipart/form-data">
 
 
         <div class="form-group mb-3">
@@ -336,31 +336,9 @@
 
             $("#VisaTypeId").change(showVisaSections);
         </script>
-        <button type="button" class="btn btn-dark" id="updateButton">Update</button>
+        <button type="submit" class="btn btn-dark" id="updateButton">Update</button>
 
-        <script>
-            $("#updateButton").click(function () {
-                debugger;
-
-               
-                var applicantId = @Model.ApplicantId; 
-
-               
-              
-
-               
-                var formData = $("#FormId").serialize();
-
-                
-                var encodedFormData = encodeURIComponent(formData);
-
-                
-                var url = "/User/EditProfile?applicantId=" + applicantId + "&visaTypeId=" + @ViewBag.VisaTypeId + "&" + encodedFormData;
-
-                
-                window.location.href = url;
-            });
-        </script>
+       
 
     </form>
 </div>

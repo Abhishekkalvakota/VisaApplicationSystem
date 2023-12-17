@@ -142,9 +142,9 @@ namespace VisaApplicationSysWeb.Controllers.API
         }
 
 
-        [HttpPut]
-        [Route("api/UserAPI/UpdateApplicantData")]
-        public IActionResult UpdateApplicantData(int applicantId, int visaTypeId, [FromBody] ApplicantProfile updatedProfile)
+
+        [HttpPut("UpdateApplicantData")]
+        public IActionResult UpdateApplicantData([FromQuery] int applicantId, [FromQuery] int visaTypeId, [FromBody] ApplicantProfile updatedProfile)
         {
             try
             {

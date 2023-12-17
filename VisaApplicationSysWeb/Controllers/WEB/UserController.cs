@@ -107,37 +107,37 @@ namespace VisaApplicationSysWeb.Controllers.WEB
         }
 
 
-        [HttpGet]
-        public async Task<IActionResult> Profile(int applicantId, int visaTypeId)
-        {
-            try
-            {
-                using (var httpClient = new HttpClient())
-                {
-                    var apiUrl = $"http://localhost:5166/api/UserAPI/Getapplicantdata?parameter1={applicantId}&parameter2={visaTypeId}";
+        //[HttpGet]
+        //public async Task<IActionResult> Profile(int applicantId, int visaTypeId)
+        //{
+        //    try
+        //    {
+        //        using (var httpClient = new HttpClient())
+        //        {
+        //            var apiUrl = $"http://localhost:5166/api/UserAPI/Getapplicantdata?parameter1={applicantId}&parameter2={visaTypeId}";
 
-                    var response = await httpClient.GetAsync(apiUrl);
-                    response.EnsureSuccessStatusCode();
+        //            var response = await httpClient.GetAsync(apiUrl);
+        //            response.EnsureSuccessStatusCode();
 
-                    var content = await response.Content.ReadAsStringAsync();
-                    var data = JsonConvert.DeserializeObject<List<ApplicantProfile>>(content);
-                    return View(data);
-                }
-            }
-            catch (HttpRequestException ex)
-            {
-                return View("Profile", $"Error during HTTP request: {ex.Message}");
-            }
-            catch (JsonException ex)
-            {
+        //            var content = await response.Content.ReadAsStringAsync();
+        //            var data = JsonConvert.DeserializeObject<List<ApplicantProfile>>(content);
+        //            return View(data);
+        //        }
+        //    }
+        //    catch (HttpRequestException ex)
+        //    {
+        //        return View("Profile", $"Error during HTTP request: {ex.Message}");
+        //    }
+        //    catch (JsonException ex)
+        //    {
                 
-                return View("Profile", $"Error during JSON deserialization: {ex.Message}");
-            }
-            catch (Exception ex)
-            {
-                return View("Profile", $"An unexpected error occurred: {ex.Message}");
-            }
-        }
+        //        return View("Profile", $"Error during JSON deserialization: {ex.Message}");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return View("Profile", $"An unexpected error occurred: {ex.Message}");
+        //    }
+        //}
 
         [HttpGet]
         public IActionResult GetEmploymentFile(string documentPath)
@@ -156,8 +156,8 @@ namespace VisaApplicationSysWeb.Controllers.WEB
             }
         }
 
-        [HttpPut]
-        public async Task<IActionResult> EditProfile(int applicantId, int visaTypeId, ApplicantProfile model,[FromForm] IFormFile NewPassportFile,[FromForm] IFormFile NewEmploymentContractFile,[FromForm] IFormFile NewResumeFile,[FromForm] IFormFile NewTestCardFile,[FromForm] IFormFile NewTravelItineraryFile,[FromForm] IFormFile NewHotelReservationFile)
+        [HttpPost]
+        public async Task<IActionResult> Profile(int applicantId, int visaTypeId, ApplicantProfile model,[FromForm] IFormFile NewPassportFile,[FromForm] IFormFile NewEmploymentContractFile,[FromForm] IFormFile NewResumeFile,[FromForm] IFormFile NewTestCardFile,[FromForm] IFormFile NewTravelItineraryFile,[FromForm] IFormFile NewHotelReservationFile)
         {
             try
             {
@@ -186,15 +186,15 @@ namespace VisaApplicationSysWeb.Controllers.WEB
             }
             catch (HttpRequestException ex)
             {
-                return View("EditProfile", $"Error during HTTP request: {ex.Message}");
+                return View("Profile", $"Error during HTTP request: {ex.Message}");
             }
             catch (JsonException ex)
             {
-                return View("EditProfile", $"Error during JSON serialization: {ex.Message}");
+                return View("Profile", $"Error during JSON serialization: {ex.Message}");
             }
             catch (Exception ex)
             {
-                return View("EditProfile", $"An unexpected error occurred: {ex.Message}");
+                return View("Profile", $"An unexpected error occurred: {ex.Message}");
             }
         }
 
@@ -222,8 +222,8 @@ namespace VisaApplicationSysWeb.Controllers.WEB
 
             return updatedFilePath;
         }
-
-        public IActionResult GetApplicantData()
+        [HttpGet]
+        public IActionResult Profile()
         {
             var applicants = _dbContext.tblApplicant.ToList();
 
@@ -255,7 +255,7 @@ namespace VisaApplicationSysWeb.Controllers.WEB
 
                         var viewModelList = JsonConvert.DeserializeObject<List<ApplicantProfile>>(content);
 
-                        // Assuming you want to display the first item in the list
+                       
                         var viewModel = viewModelList.FirstOrDefault();
 
                         ViewBag.VisaTypeId = visatypeid;
