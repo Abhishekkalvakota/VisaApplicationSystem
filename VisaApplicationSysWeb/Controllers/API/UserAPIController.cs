@@ -85,58 +85,54 @@ namespace VisaApplicationSysWeb.Controllers.API
             return BadRequest(ModelState);
         }
 
-
-        [HttpGet]
-        [Route("api/UserAPI/GetApplicantData")]
         public IActionResult GetApplicantData(int applicantId, int visaTypeId)
         {
             try
             {
+                object applicantData = null;
+
                 switch (visaTypeId)
                 {
-                    case 1: 
-                        var studentVisaData = dBContext.tblStudentVisaForm.FirstOrDefault(p => p.ApplicantId == applicantId);
-                        if (studentVisaData != null)
-                        {
-                            return Ok(studentVisaData);
-                        }
+                    case 1:
+                        applicantData = GetApplicantData(dBContext.tblStudentVisaForm, applicantId);
                         break;
 
-                    case 2: // Tourist Visa
-                        var touristVisaData = dBContext.tblTouristVisaForm.FirstOrDefault(p => p.ApplicantId == applicantId);
-                        if (touristVisaData != null)
-                        {
-                            return Ok(touristVisaData);
-                        }
+                    case 2:
+                        applicantData = GetApplicantData(dBContext.tblTouristVisaForm, applicantId);
                         break;
 
-                    case 3: // Employment Visa
-                        var employmentVisaData = dBContext.tblEmploymentVisaForm.FirstOrDefault(p => p.ApplicantId == applicantId);
-                        if (employmentVisaData != null)
-                        {
-                            return Ok(employmentVisaData);
-                        }
+                    case 3:
+                        applicantData = GetApplicantData(dBContext.tblEmploymentVisaForm, applicantId);
                         break;
 
-                    case 4: // Business Visa
-                        var businessVisaData = dBContext.tblBusinessVisaForm.FirstOrDefault(p => p.ApplicantId == applicantId);
-                        if (businessVisaData != null)
-                        {
-                            return Ok(businessVisaData);
-                        }
+                    case 4:
+                        applicantData = GetApplicantData(dBContext.tblBusinessVisaForm, applicantId);
                         break;
 
                     default:
                         return NotFound("Invalid Visa Type");
                 }
 
+                if (applicantData != null)
+                {
+                    return Ok(applicantData);
+                }
+
                 return NotFound("Applicant data not found");
             }
             catch (Exception ex)
             {
-                // Log the exception or handle it appropriately
+               
                 return StatusCode(500, $"An error occurred: {ex.Message}");
             }
+        }
+
+        private object GetApplicantData<TEntity>(DbSet<TEntity> dbSet, int applicantId)
+            where TEntity : class
+        {
+            return dbSet
+                .Where(p => EF.Property<int>(p, "ApplicantId") == applicantId)
+                .ToList(); 
         }
 
         [HttpPut]
@@ -145,14 +141,15 @@ namespace VisaApplicationSysWeb.Controllers.API
         {
             try
             {
-                
                 switch (visaTypeId)
                 {
-                    case 1: // Student Visa
-                        var studentVisaData = dBContext.tblStudentVisaForm.FirstOrDefault(p => p.ApplicantId == applicantId);
-                        if (studentVisaData != null)
+                    case 1: 
+                        var applicant1 = dBContext.tblApplicant.FirstOrDefault(a => a.ApplicantID == applicantId);
+                        if (applicant1 != null)
                         {
-
+                            
+                            var studentVisaData = dBContext.tblStudentVisaForm
+                                .FirstOrDefault(p => p.ApplicantID == applicantId) ?? new StudentVisaForm();
                             studentVisaData.FullName = updatedProfile.FullName;
                             studentVisaData.DateOfBirth = updatedProfile.DateOfBirth;
                             studentVisaData.Nationality = updatedProfile.Nationality;
@@ -173,17 +170,20 @@ namespace VisaApplicationSysWeb.Controllers.API
                             studentVisaData.TestCardPath = updatedProfile.TestCardPath;
                             studentVisaData.Passportpath = updatedProfile.Passportpath;
 
+                          
                             dBContext.SaveChanges();
 
                             return Ok("Student Visa data updated successfully");
                         }
                         break;
+                      
 
-                    case 2: // Tourist Visa
-                        var touristVisaData = dBContext.tblTouristVisaForm.FirstOrDefault(p => p.ApplicantId == applicantId);
-                        if (touristVisaData != null)
+                    case 2:
+                        var applicant2 = dBContext.tblApplicant.FirstOrDefault(a => a.ApplicantID == applicantId);
+                        if (applicant2 != null)
                         {
-                            
+                            var touristVisaData = dBContext.tblTouristVisaForm
+                              .FirstOrDefault(p => p.ApplicantID == applicantId) ?? new TouristVisaForm();
                             touristVisaData.FullName = updatedProfile.FullName;
                             touristVisaData.DateOfBirth = updatedProfile.DateOfBirth;
                             touristVisaData.Nationality = updatedProfile.Nationality;
@@ -204,11 +204,12 @@ namespace VisaApplicationSysWeb.Controllers.API
                         }
                         break;
 
-                    case 3: // Employment Visa
-                        var employmentVisaData = dBContext.tblEmploymentVisaForm.FirstOrDefault(p => p.ApplicantId == applicantId);
-                        if (employmentVisaData != null)
+                    case 3: 
+                        var applicant3 = dBContext.tblApplicant.FirstOrDefault(a => a.ApplicantID == applicantId);
+                        if (applicant3 != null)
                         {
-                            // Update properties based on the provided updatedData
+                            var employmentVisaData = dBContext.tblEmploymentVisaForm
+                              .FirstOrDefault(p => p.ApplicantID == applicantId) ?? new EmploymentVisaForm();
                             employmentVisaData.FullName = updatedProfile.FullName;
                             employmentVisaData.DateOfBirth = updatedProfile.DateOfBirth;
                             employmentVisaData.Nationality = updatedProfile.Nationality;
@@ -216,28 +217,27 @@ namespace VisaApplicationSysWeb.Controllers.API
                             employmentVisaData.CurrentAddress = updatedProfile.CurrentAddress;
                             employmentVisaData.Email = updatedProfile.Email;
                             employmentVisaData.PhoneNumber = updatedProfile.PhoneNumber;
-                            employmentVisaData.JobTitle = updatedProfile.JobTitle; // Add the actual property name
-                            employmentVisaData.CurrentEmployer = updatedProfile.CurrentEmployer; // Add the actual property name
-                            employmentVisaData.MonthlySalary = updatedProfile.MonthlySalary; // Add the actual property name
-                            employmentVisaData.ContractStartDate = updatedProfile.ContractStartDate; // Add the actual property name
-                            employmentVisaData.ContractEndDate = updatedProfile.ContractEndDate; // Add the actual property name
+                            employmentVisaData.JobTitle = updatedProfile.JobTitle;
+                            employmentVisaData.CurrentEmployer = updatedProfile.CurrentEmployer; 
+                            employmentVisaData.MonthlySalary = updatedProfile.MonthlySalary;
+                            employmentVisaData.ContractStartDate = updatedProfile.ContractStartDate; 
+                            employmentVisaData.ContractEndDate = updatedProfile.ContractEndDate;
                             employmentVisaData.PassportPhotoPath = updatedProfile.PassportPhotoPath;
                             employmentVisaData.ResumePath = updatedProfile.ResumePath;
                             employmentVisaData.Passportpath = updatedProfile.Passportpath;
-                            // Update other properties as needed
-
-                            // Save changes to the database
+                          
                             dBContext.SaveChanges();
 
                             return Ok("Employment Visa data updated successfully");
                         }
                         break;
 
-                    case 4: // Business Visa
-                        var businessVisaData = dBContext.tblBusinessVisaForm.FirstOrDefault(p => p.ApplicantId == applicantId);
-                        if (businessVisaData != null)
+                    case 4: 
+                        var applicant4 = dBContext.tblApplicant.FirstOrDefault(a => a.ApplicantID == applicantId);
+                        if (applicant4 != null)
                         {
-                            // Update properties based on the provided updatedProfile
+                            var businessVisaData = dBContext.tblBusinessVisaForm
+                              .FirstOrDefault(p => p.ApplicantID == applicantId) ?? new BusinessVisaForm();
                             businessVisaData.FullName = updatedProfile.FullName;
                             businessVisaData.DateOfBirth = updatedProfile.DateOfBirth;
                             businessVisaData.Nationality = updatedProfile.Nationality;
@@ -252,9 +252,7 @@ namespace VisaApplicationSysWeb.Controllers.API
                             businessVisaData.IntendedDepartureDate = updatedProfile.IntendedDepartureDate;
                             businessVisaData.PassportPhotoPath = updatedProfile.PassportPhotoPath;
                             businessVisaData.Passportpath = updatedProfile.Passportpath;
-                            // Update other properties as needed
-
-                            // Save changes to the database
+               
                             dBContext.SaveChanges();
 
                             return Ok("Business Visa data updated successfully");
@@ -269,7 +267,7 @@ namespace VisaApplicationSysWeb.Controllers.API
             }
             catch (Exception ex)
             {
-                // Log the exception or handle it appropriately
+               
                 return StatusCode(500, $"An error occurred: {ex.Message}");
             }
         }
@@ -278,7 +276,7 @@ namespace VisaApplicationSysWeb.Controllers.API
         public IActionResult GetVisaStatus(int applicantId)
         {
             var visaStatusModel = dBContext.tblVisaStatus
-                .FirstOrDefault(model => model.ApplicantId == applicantId);
+                .FirstOrDefault(model => model.ApplicantID == applicantId);
 
             if (visaStatusModel == null)
             {

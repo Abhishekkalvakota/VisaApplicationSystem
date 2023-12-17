@@ -86,6 +86,7 @@ namespace VisaApplicationSysWeb.Controllers.WEB
                         {
                             TempData["SuccessMessage"] = "Welcome back! You have successfully logged in.";
 
+
                             return RedirectToAction("Index", "Home");
                         }
                         else
@@ -125,16 +126,16 @@ namespace VisaApplicationSysWeb.Controllers.WEB
             }
             catch (HttpRequestException ex)
             {
-                return View("ErrorView", $"Error during HTTP request: {ex.Message}");
+                return View("Profile", $"Error during HTTP request: {ex.Message}");
             }
             catch (JsonException ex)
             {
                 
-                return View("ErrorView", $"Error during JSON deserialization: {ex.Message}");
+                return View("Profile", $"Error during JSON deserialization: {ex.Message}");
             }
             catch (Exception ex)
             {
-                return View("ErrorView", $"An unexpected error occurred: {ex.Message}");
+                return View("Profile", $"An unexpected error occurred: {ex.Message}");
             }
         }
 
@@ -180,20 +181,20 @@ namespace VisaApplicationSysWeb.Controllers.WEB
                     response.EnsureSuccessStatusCode();
 
                   
-                    return RedirectToAction("SuccessView");
+                    return RedirectToAction("Index","Home");
                 }
             }
             catch (HttpRequestException ex)
             {
-                return View("ErrorView", $"Error during HTTP request: {ex.Message}");
+                return View("EditProfile", $"Error during HTTP request: {ex.Message}");
             }
             catch (JsonException ex)
             {
-                return View("ErrorView", $"Error during JSON serialization: {ex.Message}");
+                return View("EditProfile", $"Error during JSON serialization: {ex.Message}");
             }
             catch (Exception ex)
             {
-                return View("ErrorView", $"An unexpected error occurred: {ex.Message}");
+                return View("EditProfile", $"An unexpected error occurred: {ex.Message}");
             }
         }
 
@@ -256,6 +257,10 @@ namespace VisaApplicationSysWeb.Controllers.WEB
         [HttpGet]
         public async Task<IActionResult> GetVisaStus(int applicantId)
         {
+
+            var result = _dbContext.tblApplicant.ToList();
+
+
             using (var httpClient = new HttpClient())
             {
                
@@ -280,7 +285,18 @@ namespace VisaApplicationSysWeb.Controllers.WEB
             }
         }
 
+        public IActionResult GetApplicantData()
+        {
+            var applicants = GetApplicant();
 
+            return Json(new { Applicants = applicants });
+        }
+
+        private List<Applicant> GetApplicant()
+        {
+           
+            return _dbContext.tblApplicant.ToList();
+        }
 
     }
 }

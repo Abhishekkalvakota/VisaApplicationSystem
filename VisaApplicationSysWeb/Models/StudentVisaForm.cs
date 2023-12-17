@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace VisaApplicationSysWeb.Models
 {
-    public class StudentVisaForm
+    public class StudentVisaForm 
     {
 
         [Key]
@@ -65,7 +65,7 @@ namespace VisaApplicationSysWeb.Models
         [Display(Name = "Language Test Score")]
         public string LanguageTestScore { get; set; }
 
-        // New property for mark sheet of the highest education level
+    
         [Display(Name = "Highest Education Level Mark Sheet")]
         public string HighestEducationLevelMarkSheetPath { get; set; }
 
@@ -82,17 +82,12 @@ namespace VisaApplicationSysWeb.Models
         [Display(Name = "Passport path")]
         public string Passportpath { get; set; }
 
+        [ForeignKey("Applicant")]
+        public int ApplicantID { get; set; }
 
-        [ForeignKey("ApplicantProfile")]
-        public int ApplicantId { get; set; }
-        public ApplicantProfile ApplicantProfile { get; set; }
+       
 
-        [ForeignKey("VisaType")]
-        public int VisaTypeId { get; set; }
-        public VisaType VisaType { get; set; }
-
-
-        [Display(Name = "Visa Status")]
-        public string VisaStatus { get; set; }
+        [ForeignKey("ApplicantID")]
+        public Applicant Applicant { get; set; }
     }
 }

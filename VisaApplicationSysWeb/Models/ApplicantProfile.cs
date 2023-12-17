@@ -157,8 +157,6 @@ namespace VisaApplicationSysWeb.Models
         public string NewTravelItineraryFile { get; set; }
         public string NewHotelReservationFile { get; set; }
 
-
-
     }
     
 

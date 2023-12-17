@@ -59,16 +59,16 @@ namespace VisaApplicationSysWeb.Models
         [Required(ErrorMessage = "Hotel Reservation is required")]
         public string HotelReservationPath { get; set; }
 
-        [ForeignKey("ApplicantProfile")]
-        public int ApplicantId { get; set; }
-        public ApplicantProfile ApplicantProfile { get; set; }
-
         [Display(Name = "Test Card Path")]
         public string Passportpath { get; set; }
 
+        [ForeignKey("Applicant")]
+        public int ApplicantID { get; set; }
 
-        [ForeignKey("VisaType")]
-        public int VisaTypeId { get; set; }
-        public VisaType VisaType { get; set; }
+        public Applicant tblApplicant { get; set; }
+
+      
+
+        public bool IsVisaApplied { get; set; }
     }
 }

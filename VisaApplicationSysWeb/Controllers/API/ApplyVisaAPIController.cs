@@ -21,13 +21,40 @@ namespace VisaApplicationSysWeb.Controllers.API
 
         }
 
-       
-        public IActionResult Student(StudentVisaForm model,[FromForm] IFormFile PassportPhotoPath, [FromForm] IFormFile ResumePath, [FromForm] IFormFile TestCardPath, [FromForm] IFormFile HighestEducationLevelMarkSheetPath)
+        [HttpPost]
+        [Route("PostStudent")]
+        public IActionResult PostStudent(StudentVisaForm model)
         {
             if (ModelState.IsValid)
             {
                 try
-                {
+{
+                    
+                    var newApplicant = new Applicant
+                    {
+                        FullName = model.FullName,
+                        Email = model.Email,
+                        VisaType = "Student",
+                        VisaTypeId = 1
+                    };
+
+                    _dbContext.tblApplicant.Add(newApplicant);
+                    _dbContext.SaveChanges();
+
+                   
+                    var newVisaStatus = new VisaStatusModel
+                    {
+                        FullName = model.FullName,
+                        Email = model.Email,
+                        VisaSatus = "Pending",
+                        VisaType = "Student",
+                        ApplicantID = newApplicant.ApplicantID
+                    };
+
+                    _dbContext.tblVisaStatus.Add(newVisaStatus);
+                    _dbContext.SaveChanges();
+
+                    
                     var StudentProfile = new StudentVisaForm
                     {
                         FullName = model.FullName,
@@ -42,25 +69,28 @@ namespace VisaApplicationSysWeb.Controllers.API
                         CourseTitle = model.CourseTitle,
                         ExpectedStartDate = model.ExpectedStartDate,
                         ProofOfFundsType = model.ProofOfFundsType,
+                     
                         LanguageTestTaken = model.LanguageTestTaken,
                         LanguageTestScore = model.LanguageTestScore,
                         HighestEducationLevelMarkSheetPath = model.HighestEducationLevelMarkSheetPath,
                         ResumePath = model.ResumePath,
                         TestCardPath = model.TestCardPath,
                         Passportpath = model.Passportpath,
+                        PassportPhotoPath = model.PassportPhotoPath,
+                       
+                        ApplicantID = newApplicant.ApplicantID
                     };
-
 
                     _dbContext.tblStudentVisaForm.Add(StudentProfile);
                     _dbContext.SaveChanges();
 
-
                     return Ok(new { Message = "Profile created successfully" });
                 }
+                
                 catch (Exception ex)
                 {
 
-                    return StatusCode(500, new { Message = "Registration failed", Error = ex.Message });
+                    return StatusCode(500, new { Message = "Profile Creation  failed", Error = ex.Message });
                 }
             }
 
@@ -68,12 +98,40 @@ namespace VisaApplicationSysWeb.Controllers.API
 
         }
 
-        public IActionResult Tourist(TouristVisaForm model,[FromForm] IFormFile PassportPhotoPath, [FromForm] IFormFile TravelItineraryPath, [FromForm] IFormFile HotelReservationPath, [FromForm] IFormFile Passportpath)
+        [HttpPost]
+        [Route("PostTourist")]
+        public IActionResult PostTourist(TouristVisaForm model)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
+                    
+                    var newApplicant = new Applicant
+                    {
+                        FullName = model.FullName,
+                        Email = model.Email,
+                        VisaType = "Tourist", 
+                        VisaTypeId = 2 
+                    };
+
+                    _dbContext.tblApplicant.Add(newApplicant);
+                    _dbContext.SaveChanges();
+
+                   
+                    var newVisaStatus = new VisaStatusModel
+                    {
+                        FullName = model.FullName,
+                        Email = model.Email,
+                        VisaSatus = "Pending",
+                        VisaType = "Tourist",
+                        ApplicantID = newApplicant.ApplicantID
+                    };
+
+                    _dbContext.tblVisaStatus.Add(newVisaStatus);
+                    _dbContext.SaveChanges();
+
+                    
                     var TouristProfile = new TouristVisaForm
                     {
                         FullName = model.FullName,
@@ -84,31 +142,34 @@ namespace VisaApplicationSysWeb.Controllers.API
                         Email = model.Email,
                         PhoneNumber = model.PhoneNumber,
                         IntendedArrivalDate = model.IntendedArrivalDate,
+                       
                         IntendedDepartureDate = model.IntendedDepartureDate,
                         PassportPhotoPath = model.PassportPhotoPath,
                         TravelItineraryPath = model.TravelItineraryPath,
                         HotelReservationPath = model.HotelReservationPath,
-                         Passportpath = model.Passportpath,
+                        Passportpath = model.Passportpath,
+                        IsVisaApplied = true,
+                        ApplicantID = newApplicant.ApplicantID
                     };
-
 
                     _dbContext.tblTouristVisaForm.Add(TouristProfile);
                     _dbContext.SaveChanges();
-
 
                     return Ok(new { Message = "Profile created successfully" });
                 }
                 catch (Exception ex)
                 {
 
-                    return StatusCode(500, new { Message = "Registration failed", Error = ex.Message });
+                    return StatusCode(500, new { Message = "Profile Creation failed", Error = ex.Message });
                 }
             }
 
             return BadRequest(ModelState);
 
         }
-        public IActionResult Employment(EmploymentVisaForm model, [FromForm] IFormFile PassportPhotoPath, [FromForm] IFormFile EmploymentContractPath, [FromForm] IFormFile ResumePath, [FromForm] IFormFile Passportpath)
+        [HttpPost]
+        [Route("PostEmployment")]
+        public IActionResult PostEmployment(EmploymentVisaForm model)
         {
 
             if (ModelState.IsValid)
@@ -126,6 +187,7 @@ namespace VisaApplicationSysWeb.Controllers.API
                         Email = model.Email,
                         PhoneNumber = model.PhoneNumber,
                         CurrentEmployer = model.CurrentEmployer,
+                       
                         JobTitle = model.JobTitle,
                         MonthlySalary = model.MonthlySalary,
                         ContractStartDate = model.ContractStartDate,
@@ -134,8 +196,35 @@ namespace VisaApplicationSysWeb.Controllers.API
                         ResumePath = model.ResumePath,
                         EmploymentContractPath = model.EmploymentContractPath,
                         Passportpath = model.Passportpath,
-                        
+                      
                     };
+
+                    var newApplicant = new Applicant
+                    {
+                        FullName = model.FullName,
+                        Email = model.Email,
+                        VisaType = "Employment",
+                        VisaTypeId = 3
+                    };
+
+
+                    _dbContext.tblApplicant.Add(newApplicant);
+                    _dbContext.SaveChanges();
+
+
+                    var newVisaStatus = new VisaStatusModel
+                    {
+                        FullName = model.FullName,
+                        Email = model.Email,
+                        VisaSatus = "Pending",
+                        VisaType = "Employment",
+                        ApplicantID = newApplicant.ApplicantID
+                    };
+
+
+                    _dbContext.tblVisaStatus.Add(newVisaStatus);
+                    _dbContext.SaveChanges();
+
 
                     _dbContext.tblEmploymentVisaForm.Add(EmploymentProfile);
                     _dbContext.SaveChanges();
@@ -154,8 +243,9 @@ namespace VisaApplicationSysWeb.Controllers.API
 
         }
 
-
-        public IActionResult Business(BusinessVisaForm model, [FromForm] IFormFile PassportPhotoPath, [FromForm] IFormFile LetterOfInvitationPath, [FromForm] IFormFile BusinessProposalPath, [FromForm] IFormFile Passportpath)
+        [HttpPost]
+        [Route("PostBusiness")]
+        public IActionResult Business(BusinessVisaForm model)
         {
 
 
@@ -163,6 +253,31 @@ namespace VisaApplicationSysWeb.Controllers.API
             {
                 try
                 {
+                    var newApplicant = new Applicant
+                    {
+                        FullName = model.FullName,
+                        Email = model.Email,
+                        VisaType = "Business", 
+                        VisaTypeId = 4
+                    };
+
+                    _dbContext.tblApplicant.Add(newApplicant);
+                    _dbContext.SaveChanges();
+
+                   
+                    var newVisaStatus = new VisaStatusModel
+                    {
+                        FullName = model.FullName,
+                        Email = model.Email,
+                        VisaSatus = "Pending",
+                        VisaType = "Business",
+                        ApplicantID = newApplicant.ApplicantID
+                    };
+
+                    _dbContext.tblVisaStatus.Add(newVisaStatus);
+                    _dbContext.SaveChanges();
+
+                   
                     var BusinessProfile = new BusinessVisaForm
                     {
                         FullName = model.FullName,
@@ -175,13 +290,14 @@ namespace VisaApplicationSysWeb.Controllers.API
                         CompanyName = model.CompanyName,
                         BusinessTitle = model.BusinessTitle,
                         BusinessNature = model.BusinessNature,
+                       
                         IntendedArrivalDate = model.IntendedArrivalDate,
                         IntendedDepartureDate = model.IntendedDepartureDate,
                         PassportPhotoPath = model.PassportPhotoPath,
                         Passportpath = model.Passportpath,
-                        
+                        IsVisaApplied = true,
+                        ApplicantID = newApplicant.ApplicantID
                     };
-
 
                     _dbContext.tblBusinessVisaForm.Add(BusinessProfile);
                     _dbContext.SaveChanges();
@@ -192,7 +308,7 @@ namespace VisaApplicationSysWeb.Controllers.API
                 catch (Exception ex)
                 {
 
-                    return StatusCode(500, new { Message = "Registration failed", Error = ex.Message });
+                    return StatusCode(500, new { Message = "Profile Creation  failed", Error = ex.Message });
                 }
             }
 
