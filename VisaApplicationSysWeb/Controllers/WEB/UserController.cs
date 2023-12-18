@@ -86,6 +86,7 @@ namespace VisaApplicationSysWeb.Controllers.WEB
                         {
                             TempData["SuccessMessage"] = "Welcome back! You have successfully logged in.";
 
+
                             return RedirectToAction("Index", "Home");
                         }
                         else
@@ -106,37 +107,7 @@ namespace VisaApplicationSysWeb.Controllers.WEB
         }
 
 
-        [HttpGet]
-        public async Task<IActionResult> Profile(int applicantId, int visaTypeId)
-        {
-            try
-            {
-                using (var httpClient = new HttpClient())
-                {
-                    var apiUrl = $"http://localhost:5166/api/UserAPI/Getapplicantdata?parameter1={applicantId}&parameter2={visaTypeId}";
-
-                    var response = await httpClient.GetAsync(apiUrl);
-                    response.EnsureSuccessStatusCode();
-
-                    var content = await response.Content.ReadAsStringAsync();
-                    var data = JsonConvert.DeserializeObject<List<ApplicantProfile>>(content);
-                    return View(data);
-                }
-            }
-            catch (HttpRequestException ex)
-            {
-                return View("ErrorView", $"Error during HTTP request: {ex.Message}");
-            }
-            catch (JsonException ex)
-            {
-                
-                return View("ErrorView", $"Error during JSON deserialization: {ex.Message}");
-            }
-            catch (Exception ex)
-            {
-                return View("ErrorView", $"An unexpected error occurred: {ex.Message}");
-            }
-        }
+     
 
         [HttpGet]
         public IActionResult GetEmploymentFile(string documentPath)
@@ -155,8 +126,8 @@ namespace VisaApplicationSysWeb.Controllers.WEB
             }
         }
 
-        [HttpPut]
-        public async Task<IActionResult> EditProfile(int applicantId, int visaTypeId, ApplicantProfile model,[FromForm] IFormFile NewPassportFile,[FromForm] IFormFile NewEmploymentContractFile,[FromForm] IFormFile NewResumeFile,[FromForm] IFormFile NewTestCardFile,[FromForm] IFormFile NewTravelItineraryFile,[FromForm] IFormFile NewHotelReservationFile)
+        [HttpPost]
+        public async Task<IActionResult> Profile(int applicantId, int visaTypeId, ApplicantProfile model,[FromForm] IFormFile NewPassportFile,[FromForm] IFormFile NewEmploymentContractFile,[FromForm] IFormFile NewResumeFile,[FromForm] IFormFile NewTestCardFile,[FromForm] IFormFile NewTravelItineraryFile,[FromForm] IFormFile NewHotelReservationFile)
         {
             try
             {
@@ -180,20 +151,20 @@ namespace VisaApplicationSysWeb.Controllers.WEB
                     response.EnsureSuccessStatusCode();
 
                   
-                    return RedirectToAction("SuccessView");
+                    return RedirectToAction("Index","Home");
                 }
             }
             catch (HttpRequestException ex)
             {
-                return View("ErrorView", $"Error during HTTP request: {ex.Message}");
+                return View("Profile", $"Error during HTTP request: {ex.Message}");
             }
             catch (JsonException ex)
             {
-                return View("ErrorView", $"Error during JSON serialization: {ex.Message}");
+                return View("Profile", $"Error during JSON serialization: {ex.Message}");
             }
             catch (Exception ex)
             {
-                return View("ErrorView", $"An unexpected error occurred: {ex.Message}");
+                return View("Profile", $"An unexpected error occurred: {ex.Message}");
             }
         }
 
@@ -221,14 +192,30 @@ namespace VisaApplicationSysWeb.Controllers.WEB
 
             return updatedFilePath;
         }
-
-        public IActionResult GetApplicantData(int applicantId, int visaTypeId)
+        [HttpGet]
+        public IActionResult Profile()
         {
+            var applicants = _dbContext.tblApplicant.ToList();
+
+            int applicantId = 0;
+
+            int visatypeid = 0;
+
+            foreach (var applicant in applicants)
+            {
+                if (applicant.IsVisaApplied)
+                {
+                    applicantId = applicant.ApplicantID;
+                    visatypeid = applicant.VisaTypeId;
+                    break;
+                }
+            }
+
             try
             {
                 using (var httpClient = new HttpClient())
                 {
-                    var apiUrl = $"http://localhost:5166/api/UserAPI/GetApplicantData?applicantId={applicantId}&visaTypeId={visaTypeId}";
+                    var apiUrl = $"http://localhost:5166/api/UserAPI/GetApplicantData?applicantId={applicantId}&visaTypeId={visatypeid}";
 
                     var response = httpClient.GetAsync(apiUrl).Result;
 
@@ -236,8 +223,13 @@ namespace VisaApplicationSysWeb.Controllers.WEB
                     {
                         var content = response.Content.ReadAsStringAsync().Result;
 
-                        var viewModel = JsonConvert.DeserializeObject<ApplicantProfile>(content);
+                        var viewModelList = JsonConvert.DeserializeObject<List<ApplicantProfile>>(content);
 
+                       
+                        var viewModel = viewModelList.FirstOrDefault();
+
+                        ViewBag.applicantId = applicantId;
+                        ViewBag.VisaTypeId = visatypeid;
                         return View("Profile", viewModel);
                     }
                     else
@@ -254,28 +246,44 @@ namespace VisaApplicationSysWeb.Controllers.WEB
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetVisaStus(int applicantId)
+        public async Task<IActionResult> GetVisaStatus()
         {
+            var applicants = _dbContext.tblApplicant.ToList();
+
+            int applicantId = 0;
+
+            foreach (var applicant in applicants)
+            {
+                if (applicant.IsVisaApplied)
+                {
+                    applicantId = applicant.ApplicantID;
+                    break;
+                }
+            }
             using (var httpClient = new HttpClient())
             {
-               
-                var apiEndpoint = "http://localhost:5166//api/UserAPI/GetVisaStatus" + applicantId;
+                var apiEndpoint = $"http://localhost:5166/api/UserAPI/GetVisaStatus/{applicantId}";
 
-                using (var response = await httpClient.GetAsync(apiEndpoint))
+                try
                 {
+                    var response = await httpClient.GetAsync(apiEndpoint);
+
                     if (response.IsSuccessStatusCode)
                     {
                         var jsonString = await response.Content.ReadAsStringAsync();
                         var visaStatusModel = JsonConvert.DeserializeObject<VisaStatusModel>(jsonString);
 
-                        
                         return View(visaStatusModel);
                     }
                     else
                     {
-                        
                         return View("Error");
                     }
+                }
+                catch (HttpRequestException)
+                {
+                    // Handle HTTP request exception
+                    return View("Error");
                 }
             }
         }

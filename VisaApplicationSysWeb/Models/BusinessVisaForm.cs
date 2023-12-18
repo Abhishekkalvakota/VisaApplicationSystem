@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace VisaApplicationSysWeb.Models
 {
-    public class BusinessVisaForm
+    public class BusinessVisaForm 
     {
         [Key]
         public int BusinessVisaFormId { get; set; }
@@ -65,14 +65,14 @@ namespace VisaApplicationSysWeb.Models
         [Display(Name = "Passportpath")]
         public string Passportpath { get; set; }
 
+        [ForeignKey("Applicant")]
+        public int ApplicantID { get; set; }
+
+        public Applicant tblApplicant { get; set; }
+
         
 
-        [ForeignKey("ApplicantProfile")]
-        public int ApplicantId { get; set; }
-        public ApplicantProfile ApplicantProfile { get; set; }
+        public bool IsVisaApplied { get; set; }
 
-        [ForeignKey("VisaType")]
-        public int VisaTypeId { get; set; }
-        public VisaType VisaType { get; set; }
     }
 }

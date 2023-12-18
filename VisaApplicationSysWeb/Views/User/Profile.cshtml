@@ -5,13 +5,14 @@
     .custom-width {
         width: 500px 
     }
+
+   
 </style>
 
 <div class="container py-5">
 
-    <form asp-action="Profile" asp-controller="User" method="post" enctype="multipart/form-data">
+    <form asp-action="Profile" asp-controller="User" method="post" id="FormId" enctype="multipart/form-data">
 
-        <input type="hidden" id="VisaTypeId" name="VisaTypeId" value="@Model.VisaTypeId" />
 
         <div class="form-group mb-3">
             <label asp-for="FullName"> FullName</label>
@@ -39,7 +40,7 @@
         </div>
 
         <!-- Passport Photo -->
-        <div class="form-group mb-3">
+        <div class="form-group hide mb-3">
             <label asp-for="PassportPhotoPath">Upload Passport Photo</label>
             <input type="file" name="PassportPhotoPath" class="form-control-file custom-width" />
             <span asp-validation-for="PassportPhotoPath" class="text-danger"></span>
@@ -89,6 +90,13 @@
             <label asp-for="PhoneNumber">Phone Number</label>
             <input asp-for="PhoneNumber" class="form-control custom-width" />
             <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+
+
+        <div class="form-group mb-3">
+            <label asp-for="CurrentAddress">Current Address</label>
+            <input asp-for="CurrentAddress" class="form-control custom-width" />
+            <span asp-validation-for="CurrentAddress" class="text-danger"></span>
         </div>
 
 
@@ -295,37 +303,55 @@
 
 
         <script>
-            $(document).ready(function () {
-              
-                function showVisaSections() {
-                    var visaTypeId = $("#VisaTypeId").val();
+            function showVisaSections() {
+                var visaTypeId = @ViewBag.VisaTypeId;
 
-                   
-                    $(".visa-section").hide();
+                var applicantId = @ViewBag.applicantId;
 
-                
-                    switch (visaTypeId) {
-                        case "1": 
-                            $("#studentVisaSection").show();
-                            break;
-                        case "2": 
-                            $("#TouristVisaSection").show();
-                            break;
-                        case "3": 
-                            $("#EmployeeVisaSection").show();
-                            break;
-                        case "4": 
-                            $("#BusinessVisaSection").show();
-                            break;
-                        d
-                    }
+                $(".visa-section").hide();
+
+                switch (visaTypeId) {
+                    case 1:
+                        $("#studentVisaSection").show();
+                        $("#TouristVisaSection").hide();
+                        $("#EmployeeVisaSection").hide();
+                        $("#BusinessVisaSection").hide();
+                        break;
+                    case 2:
+                        $("#TouristVisaSection").show();
+                        $("#studentVisaSection").hide();
+                        $("#EmployeeVisaSection").hide();
+                        $("#BusinessVisaSection").hide();
+                        break;
+                    case 3:
+                        $("#EmployeeVisaSection").show();
+                        $("#TouristVisaSection").hide();
+                        $("#studentVisaSection").hide();
+                        $("#BusinessVisaSection").hide();
+                        break;
+                    case 4:
+                        $("#BusinessVisaSection").show();
+                        $("#EmployeeVisaSection").hide();
+                        $("#TouristVisaSection").hide();
+                        $("#studentVisaSection").hide();
+                        break;
+                    default:
+                        
+                        break;
                 }
+            }
 
-                showVisaSections();
+            showVisaSections();
 
-                $("#VisaTypeId").change(showVisaSections);
-            });
+            $("#VisaTypeId").change(showVisaSections);
         </script>
-        <button type="submit" class="btn btn-dark">Submit</button>
+
+        <input type="hidden" name="applicantId" value="@ViewBag.applicantId" />
+        <input type="hidden" name="visaTypeId" value="@ViewBag.VisaTypeId" />
+
+        <button type="submit" class="btn btn-dark" id="updateButton">Update</button>
+
+       
+
     </form>
 </div>

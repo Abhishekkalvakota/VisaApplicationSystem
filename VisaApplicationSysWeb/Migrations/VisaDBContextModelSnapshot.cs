@@ -22,186 +22,32 @@ namespace VisaApplicationSysWeb.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("VisaApplicationSysWeb.Models.ApplicantProfile", b =>
+            modelBuilder.Entity("VisaApplicationSysWeb.Models.Applicant", b =>
                 {
-                    b.Property<int>("ApplicantId")
+                    b.Property<int>("ApplicantID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ApplicantId"));
-
-                    b.Property<string>("BusinessNature")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("BusinessTitle")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("BusinessVisaFormId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CompanyName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ContractEndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("ContractStartDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CourseTitle")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CurrentAddress")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CurrentEmployer")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DateOfBirth")
-                        .HasColumnType("datetime2");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ApplicantID"));
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EmploymentContractPath")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("EmploymentVisaFormId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("ExpectedStartDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("FullName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("HighestEducationLevel")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("IsVisaApplied")
+                        .HasColumnType("bit");
 
-                    b.Property<string>("HighestEducationLevelMarkSheetPath")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("HotelReservationPath")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("InstitutionName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("IntendedArrivalDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("IntendedDepartureDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("JobTitle")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LanguageTestScore")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LanguageTestTaken")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("MonthlySalary")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Nationality")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NewEmploymentContractFile")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NewHotelReservationFile")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NewPassportFile")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NewResumeFile")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NewTestCardFile")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NewTravelItineraryFile")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PassportFilePath")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PassportNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PassportPhotoPath")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Passportpath")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProofOfFundsType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ResumePath")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("StudentVisaFormId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TestCardPath")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("TouristVisaFormId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TravelItineraryPath")
-                        .IsRequired()
+                    b.Property<string>("VisaType")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("VisaTypeId")
                         .HasColumnType("int");
 
-                    b.HasKey("ApplicantId");
+                    b.HasKey("ApplicantID");
 
-                    b.HasIndex("BusinessVisaFormId")
-                        .IsUnique()
-                        .HasFilter("[BusinessVisaFormId] IS NOT NULL");
-
-                    b.HasIndex("EmploymentVisaFormId")
-                        .IsUnique()
-                        .HasFilter("[EmploymentVisaFormId] IS NOT NULL");
-
-                    b.HasIndex("StudentVisaFormId")
-                        .IsUnique()
-                        .HasFilter("[StudentVisaFormId] IS NOT NULL");
-
-                    b.HasIndex("TouristVisaFormId")
-                        .IsUnique()
-                        .HasFilter("[TouristVisaFormId] IS NOT NULL");
-
-                    b.HasIndex("VisaTypeId");
-
-                    b.ToTable("tblprofile");
+                    b.ToTable("tblApplicant");
                 });
 
             modelBuilder.Entity("VisaApplicationSysWeb.Models.BusinessVisaForm", b =>
@@ -212,7 +58,7 @@ namespace VisaApplicationSysWeb.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BusinessVisaFormId"));
 
-                    b.Property<int>("ApplicantId")
+                    b.Property<int>("ApplicantID")
                         .HasColumnType("int");
 
                     b.Property<string>("BusinessNature")
@@ -247,6 +93,9 @@ namespace VisaApplicationSysWeb.Migrations
 
                     b.Property<DateTime>("IntendedDepartureDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsVisaApplied")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Nationality")
                         .IsRequired()
@@ -272,6 +121,8 @@ namespace VisaApplicationSysWeb.Migrations
 
                     b.HasKey("BusinessVisaFormId");
 
+                    b.HasIndex("ApplicantID");
+
                     b.HasIndex("VisaTypeId");
 
                     b.ToTable("tblBusinessVisaForm");
@@ -285,7 +136,7 @@ namespace VisaApplicationSysWeb.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmploymentVisaFormId"));
 
-                    b.Property<int>("ApplicantId")
+                    b.Property<int>("ApplicantID")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("ContractEndDate")
@@ -317,12 +168,15 @@ namespace VisaApplicationSysWeb.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsVisaApplied")
+                        .HasColumnType("bit");
+
                     b.Property<string>("JobTitle")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("MonthlySalary")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<string>("Nationality")
                         .IsRequired()
@@ -352,6 +206,8 @@ namespace VisaApplicationSysWeb.Migrations
 
                     b.HasKey("EmploymentVisaFormId");
 
+                    b.HasIndex("ApplicantID");
+
                     b.HasIndex("VisaTypeId");
 
                     b.ToTable("tblEmploymentVisaForm");
@@ -365,7 +221,7 @@ namespace VisaApplicationSysWeb.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudentVisaFormId"));
 
-                    b.Property<int>("ApplicantId")
+                    b.Property<int>("ApplicantID")
                         .HasColumnType("int");
 
                     b.Property<string>("CourseTitle")
@@ -436,13 +292,12 @@ namespace VisaApplicationSysWeb.Migrations
                     b.Property<string>("TestCardPath")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("VisaStatus")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("VisaTypeId")
+                    b.Property<int?>("VisaTypeId")
                         .HasColumnType("int");
 
                     b.HasKey("StudentVisaFormId");
+
+                    b.HasIndex("ApplicantID");
 
                     b.HasIndex("VisaTypeId");
 
@@ -457,7 +312,7 @@ namespace VisaApplicationSysWeb.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TouristVisaFormId"));
 
-                    b.Property<int>("ApplicantId")
+                    b.Property<int>("ApplicantID")
                         .HasColumnType("int");
 
                     b.Property<string>("CurrentAddress")
@@ -484,6 +339,9 @@ namespace VisaApplicationSysWeb.Migrations
 
                     b.Property<DateTime>("IntendedDepartureDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsVisaApplied")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Nationality")
                         .IsRequired()
@@ -512,6 +370,8 @@ namespace VisaApplicationSysWeb.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("TouristVisaFormId");
+
+                    b.HasIndex("ApplicantID");
 
                     b.HasIndex("VisaTypeId");
 
@@ -544,11 +404,14 @@ namespace VisaApplicationSysWeb.Migrations
 
             modelBuilder.Entity("VisaApplicationSysWeb.Models.VisaStatusModel", b =>
                 {
-                    b.Property<int>("ApplicantId")
+                    b.Property<int>("VisaStatusID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ApplicantId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VisaStatusID"));
+
+                    b.Property<int>("ApplicantID")
+                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -556,13 +419,15 @@ namespace VisaApplicationSysWeb.Migrations
                     b.Property<string>("FullName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Status")
+                    b.Property<string>("VisaSatus")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("VisaType")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ApplicantId");
+                    b.HasKey("VisaStatusID");
+
+                    b.HasIndex("ApplicantID");
 
                     b.ToTable("tblVisaStatus");
                 });
@@ -583,103 +448,94 @@ namespace VisaApplicationSysWeb.Migrations
                     b.ToTable("tblVisaType");
                 });
 
-            modelBuilder.Entity("VisaApplicationSysWeb.Models.ApplicantProfile", b =>
+            modelBuilder.Entity("VisaApplicationSysWeb.Models.BusinessVisaForm", b =>
                 {
-                    b.HasOne("VisaApplicationSysWeb.Models.BusinessVisaForm", "BusinessVisaForm")
-                        .WithOne("ApplicantProfile")
-                        .HasForeignKey("VisaApplicationSysWeb.Models.ApplicantProfile", "BusinessVisaFormId");
-
-                    b.HasOne("VisaApplicationSysWeb.Models.EmploymentVisaForm", "EmploymentVisaForm")
-                        .WithOne("ApplicantProfile")
-                        .HasForeignKey("VisaApplicationSysWeb.Models.ApplicantProfile", "EmploymentVisaFormId");
-
-                    b.HasOne("VisaApplicationSysWeb.Models.StudentVisaForm", "StudentVisaForm")
-                        .WithOne("ApplicantProfile")
-                        .HasForeignKey("VisaApplicationSysWeb.Models.ApplicantProfile", "StudentVisaFormId");
-
-                    b.HasOne("VisaApplicationSysWeb.Models.TouristVisaForm", "TouristVisaForm")
-                        .WithOne("ApplicantProfile")
-                        .HasForeignKey("VisaApplicationSysWeb.Models.ApplicantProfile", "TouristVisaFormId");
-
-                    b.HasOne("VisaApplicationSysWeb.Models.VisaType", "VisaType")
-                        .WithMany()
-                        .HasForeignKey("VisaTypeId")
+                    b.HasOne("VisaApplicationSysWeb.Models.Applicant", "tblApplicant")
+                        .WithMany("BusinessVisaForms")
+                        .HasForeignKey("ApplicantID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("BusinessVisaForm");
-
-                    b.Navigation("EmploymentVisaForm");
-
-                    b.Navigation("StudentVisaForm");
-
-                    b.Navigation("TouristVisaForm");
-
-                    b.Navigation("VisaType");
-                });
-
-            modelBuilder.Entity("VisaApplicationSysWeb.Models.BusinessVisaForm", b =>
-                {
-                    b.HasOne("VisaApplicationSysWeb.Models.VisaType", "VisaType")
+                    b.HasOne("VisaApplicationSysWeb.Models.VisaType", null)
                         .WithMany("BusinessVisaForms")
                         .HasForeignKey("VisaTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("VisaType");
+                    b.Navigation("tblApplicant");
                 });
 
             modelBuilder.Entity("VisaApplicationSysWeb.Models.EmploymentVisaForm", b =>
                 {
-                    b.HasOne("VisaApplicationSysWeb.Models.VisaType", "VisaType")
+                    b.HasOne("VisaApplicationSysWeb.Models.Applicant", "tblApplicant")
+                        .WithMany("EmploymentVisaForms")
+                        .HasForeignKey("ApplicantID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("VisaApplicationSysWeb.Models.VisaType", null)
                         .WithMany("EmploymentVisaForms")
                         .HasForeignKey("VisaTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("VisaType");
+                    b.Navigation("tblApplicant");
                 });
 
             modelBuilder.Entity("VisaApplicationSysWeb.Models.StudentVisaForm", b =>
                 {
-                    b.HasOne("VisaApplicationSysWeb.Models.VisaType", "VisaType")
-                        .WithMany("StudentVisaForms")
-                        .HasForeignKey("VisaTypeId")
+                    b.HasOne("VisaApplicationSysWeb.Models.Applicant", "Applicant")
+                        .WithMany("tblStudentVisaForm")
+                        .HasForeignKey("ApplicantID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("VisaType");
+                    b.HasOne("VisaApplicationSysWeb.Models.VisaType", null)
+                        .WithMany("StudentVisaForms")
+                        .HasForeignKey("VisaTypeId");
+
+                    b.Navigation("Applicant");
                 });
 
             modelBuilder.Entity("VisaApplicationSysWeb.Models.TouristVisaForm", b =>
                 {
-                    b.HasOne("VisaApplicationSysWeb.Models.VisaType", "VisaType")
+                    b.HasOne("VisaApplicationSysWeb.Models.Applicant", "tblApplicant")
+                        .WithMany("TouristVisaForms")
+                        .HasForeignKey("ApplicantID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("VisaApplicationSysWeb.Models.VisaType", null)
                         .WithMany("TouristVisaForms")
                         .HasForeignKey("VisaTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("VisaType");
+                    b.Navigation("tblApplicant");
                 });
 
-            modelBuilder.Entity("VisaApplicationSysWeb.Models.BusinessVisaForm", b =>
+            modelBuilder.Entity("VisaApplicationSysWeb.Models.VisaStatusModel", b =>
                 {
-                    b.Navigation("ApplicantProfile");
+                    b.HasOne("VisaApplicationSysWeb.Models.Applicant", "tblApplicant")
+                        .WithMany("tblVisaStatus")
+                        .HasForeignKey("ApplicantID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("tblApplicant");
                 });
 
-            modelBuilder.Entity("VisaApplicationSysWeb.Models.EmploymentVisaForm", b =>
+            modelBuilder.Entity("VisaApplicationSysWeb.Models.Applicant", b =>
                 {
-                    b.Navigation("ApplicantProfile");
-                });
+                    b.Navigation("BusinessVisaForms");
 
-            modelBuilder.Entity("VisaApplicationSysWeb.Models.StudentVisaForm", b =>
-                {
-                    b.Navigation("ApplicantProfile");
-                });
+                    b.Navigation("EmploymentVisaForms");
 
-            modelBuilder.Entity("VisaApplicationSysWeb.Models.TouristVisaForm", b =>
-                {
-                    b.Navigation("ApplicantProfile");
+                    b.Navigation("TouristVisaForms");
+
+                    b.Navigation("tblStudentVisaForm");
+
+                    b.Navigation("tblVisaStatus");
                 });
 
             modelBuilder.Entity("VisaApplicationSysWeb.Models.VisaType", b =>

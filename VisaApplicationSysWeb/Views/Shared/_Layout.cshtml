@@ -12,6 +12,67 @@
 
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/VisaApplicationSysWeb.styles.css" asp-append-version="true" />
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <script>
+
+
+        $('#loadTableLink').on('click', function (e) {
+            debugger;
+            e.preventDefault(); // Prevent the default link behavior
+            loadTable();
+        });
+        function loadTable() {
+            $.ajax({
+                url: '/User/GetApplicantData',
+                type: 'GET',
+                success: function (data) {
+                    applicants = data.applicants; // Assign the value to the global variable
+
+                    if (applicants && applicants.length > 0) {
+                        var isVisaApplied = applicants[0].IsVisaApplied;
+                        updateNavigationLinks(isVisaApplied);
+                        update(isVisaApplied);
+                    }
+                },
+                error: function () {
+                    console.error('Error loading table data.');
+                }
+            });
+        }
+
+        function updateNavigationLinks(isVisaApplied) {
+            var profileLink = $('#profileLink');
+            var visaStatusLink = $('#visaStatusLink');
+
+            if (isVisaApplied) {
+                profileLink.show();
+                visaStatusLink.show();
+            } else {
+                profileLink.hide();
+                visaStatusLink.hide();
+            }
+        }
+
+        function update(isVisaApplied) {
+            var profileLink = $('#profileLink');
+            var visaStatusLink = $('#visaStatusLink');
+
+            if (isVisaApplied) {
+                var visatypeId = applicants[0].VisaTypeId;
+                var applicantId = applicants[0].ApplicantID;
+
+                profileLink.attr('href', `/User/Profile?visatypeId=${visatypeId}&applicantId=${applicantId}`);
+                visaStatusLink.attr('href', `/User/VisaStatus?applicantId=${applicantId}`);
+            } else {
+                profileLink.attr('href', '/User/DefaultProfile');
+                visaStatusLink.attr('href', '/User/DefaultVisaStatus');
+            }
+        }
+    </script>
+
+
 </head>
 
 <body>
@@ -26,13 +87,13 @@
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link " asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="User" asp-action="Profile">View Profile</a>
+                            <a class="nav-link loadTableLink" asp-area="" asp-controller="User" asp-action="Profile" id="profileLink">View Profile</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="User" asp-action="GetVisaStus">Visa Status</a>
+                            <a class="nav-link loadTableLink" asp-area="" asp-controller="User" asp-action="GetVisaStatus" id="visaStatusLink">Visa Status</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="User" asp-action="Login">Log Out</a>
@@ -56,23 +117,29 @@
         </div>
     </footer>
 
-    <!-- Bootstrap JS, Popper.js, and jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-            crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popperjs/core@2.10.2/dist/umd/popper.min.js"
-            integrity="sha384-M9kBLBxaJQiZ6li5FV/5l4JE1jslhaQGi8u8SU4k3pkMmF2cyYYMjgKbPVfynP9J"
-            crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+WyXMNyA8Lq8iNCI1dz1LvDd9bA9S2JZn"
-            crossorigin="anonymous"></script>
+   <!-- Bootstrap JS, Popper.js, and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
 
-    <!-- jQuery Validate and Unobtrusive Validation -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popperjs/core2.10.2/dist/umd/popper.min.js"
+        integrity="YOUR_POPPER_INTEGRITY_HASH"
+        crossorigin="anonymous"></script>
 
-    <!-- Bootstrap Datepicker JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+WyXMNyA8Lq8iNCI1dz1LvDd9bA9S2JZn"
+        crossorigin="anonymous"></script>
+
+<!-- jQuery Validate and Unobtrusive Validation -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+
+<!-- Bootstrap Datepicker JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
+<!-- Your custom scripts -->
+<script src="~/js/site.js" asp-append-version="true"></script>
+
 
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)

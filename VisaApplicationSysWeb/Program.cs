@@ -24,7 +24,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=ApplyVisa}/{action=Student}/{id?}"
+    pattern: "{controller=User}/{action=Login}/{id?}"
 
     );
 
@@ -33,6 +33,20 @@ app.MapControllerRoute(
       pattern: "api/{controller}/{action}/{id?}"
 
       );
+
+
+app.MapControllerRoute(
+    name: "profileRoute",
+    pattern: "User/Profile/{visatypeId}/{applicantId}",
+    defaults: new { controller = "User", action = "Profile" }
+);
+
+app.MapControllerRoute(
+    name: "visaStatusRoute",
+    pattern: "User/GetVisaStus/{applicantId}",
+    defaults: new { controller = "User", action = "GetVisaStus" }
+);
+
 
 app.MapControllers();
 

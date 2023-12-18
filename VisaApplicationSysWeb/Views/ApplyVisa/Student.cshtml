@@ -11,7 +11,7 @@
 
 <div class="container py-5">
     <form asp-action="Student" asp-controller="ApplyVisa" method="post" enctype="multipart/form-data" id="studentVisaForm">
-        <input type="hidden" asp-for="VisaTypeId" value="@ViewBag.selectedVisaType" />
+       
         <div class="form-group mb-3">
             <label asp-for="FullName">Full Name</label>
             <input asp-for="FullName" class="form-control custom-width" />
