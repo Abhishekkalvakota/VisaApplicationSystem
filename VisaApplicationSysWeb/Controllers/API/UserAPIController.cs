@@ -141,8 +141,6 @@ namespace VisaApplicationSysWeb.Controllers.API
             return dbSet.Where(lambda).ToList();
         }
 
-
-
         [HttpPut("UpdateApplicantData")]
         public IActionResult UpdateApplicantData([FromQuery] int applicantId, [FromQuery] int visaTypeId, [FromBody] ApplicantProfile updatedProfile)
         {

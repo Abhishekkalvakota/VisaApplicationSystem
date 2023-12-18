@@ -107,37 +107,7 @@ namespace VisaApplicationSysWeb.Controllers.WEB
         }
 
 
-        //[HttpGet]
-        //public async Task<IActionResult> Profile(int applicantId, int visaTypeId)
-        //{
-        //    try
-        //    {
-        //        using (var httpClient = new HttpClient())
-        //        {
-        //            var apiUrl = $"http://localhost:5166/api/UserAPI/Getapplicantdata?parameter1={applicantId}&parameter2={visaTypeId}";
-
-        //            var response = await httpClient.GetAsync(apiUrl);
-        //            response.EnsureSuccessStatusCode();
-
-        //            var content = await response.Content.ReadAsStringAsync();
-        //            var data = JsonConvert.DeserializeObject<List<ApplicantProfile>>(content);
-        //            return View(data);
-        //        }
-        //    }
-        //    catch (HttpRequestException ex)
-        //    {
-        //        return View("Profile", $"Error during HTTP request: {ex.Message}");
-        //    }
-        //    catch (JsonException ex)
-        //    {
-                
-        //        return View("Profile", $"Error during JSON deserialization: {ex.Message}");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return View("Profile", $"An unexpected error occurred: {ex.Message}");
-        //    }
-        //}
+     
 
         [HttpGet]
         public IActionResult GetEmploymentFile(string documentPath)
@@ -258,6 +228,7 @@ namespace VisaApplicationSysWeb.Controllers.WEB
                        
                         var viewModel = viewModelList.FirstOrDefault();
 
+                        ViewBag.applicantId = applicantId;
                         ViewBag.VisaTypeId = visatypeid;
                         return View("Profile", viewModel);
                     }

@@ -24,7 +24,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=ApplyVisa}/{action=Student}/{id?}"
+    pattern: "{controller=User}/{action=Login}/{id?}"
 
     );
 

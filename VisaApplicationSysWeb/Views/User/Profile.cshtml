@@ -93,6 +93,13 @@
         </div>
 
 
+        <div class="form-group mb-3">
+            <label asp-for="CurrentAddress">Current Address</label>
+            <input asp-for="CurrentAddress" class="form-control custom-width" />
+            <span asp-validation-for="CurrentAddress" class="text-danger"></span>
+        </div>
+
+
         <!-- Student Related text Boxes Start-------------------------------------------- -->
 
       <div id="studentVisaSection" class="visa-section">
@@ -299,6 +306,8 @@
             function showVisaSections() {
                 var visaTypeId = @ViewBag.VisaTypeId;
 
+                var applicantId = @ViewBag.applicantId;
+
                 $(".visa-section").hide();
 
                 switch (visaTypeId) {
@@ -336,6 +345,10 @@
 
             $("#VisaTypeId").change(showVisaSections);
         </script>
+
+        <input type="hidden" name="applicantId" value="@ViewBag.applicantId" />
+        <input type="hidden" name="visaTypeId" value="@ViewBag.VisaTypeId" />
+
         <button type="submit" class="btn btn-dark" id="updateButton">Update</button>
 
        
